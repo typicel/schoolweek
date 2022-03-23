@@ -1,47 +1,75 @@
-import {useState} from 'react';
-import TodoForm from './components/TodoForm'
-import TodoList from './components/TodoList'
-import './App.css'
+import { useState, useEffect } from "react";
+import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
+import CompletedList from "./components/CompletedList";
+import "./App.css";
 
-
-const Header = () => {
+const Header = ({ type }) => {
   return (
     <header>
-      <h1>Todo List</h1>
+      <h1>{type}</h1>
     </header>
   );
-}
-
+};
 
 function App() {
+  const [toDoList, setTodoList] = useState(() => {
+    const saved = localStorage.getItem("data");
+    const inital = JSON.parse(saved);
+    return inital || "";
+  });
 
-  const [toDoList, setTodoList] = useState([]);
-
-  const handleToggle = (id) => {
-    let mapped = toDoList.map(task => {
-      return task.id == id ? {...task, complete: !task.complete} : {...task};
-    })
-    setTodoList(mapped);
-  }
-
-  const handleFilter = () => {
-    let filtered = toDoList.filter(task => {
-      return !task.complete;
-    });
-    setTodoList(filtered);
-  }
+  const handleDelete = (id) => {
+    const newArr = toDoList.filter((task) => task.id != id);
+    setTodoList(newArr);
+  };
 
   const addTask = (task, date) => {
-    let copy = [...toDoList];
-    copy = [...copy, {id: Math.floor(Math.random() * 1000), task: task, date: date, complete: false}];
-    setTodoList(copy);
-  }
+    if (task == "") {
+      alert("Please enter a task name");
+      return;
+    }
+    let dateObj = new Date(date + " 00:00");
+    let today = new Date();
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
+    timeLeft = Math.ceil(timeLeft / 86400);
 
-  return(
+    if (timeLeft < 0) {
+      alert("Invalid date");
+      return;
+    }
+
+    let copy = [...toDoList];
+    copy = [
+      ...copy,
+      {
+        id: Math.floor(Math.random() * 1000),
+        task: task,
+        date: date,
+        completed: false,
+      },
+    ];
+
+    copy = copy.sort((task1, task2) => {
+      return new Date(task1.date) - new Date(task2.date);
+    });
+
+    setTodoList(copy);
+  };
+
+  //use local storage
+  useEffect(() => {
+    localStorage.setItem("data", JSON.stringify(toDoList));
+    //localStorage.setItem("completed", JSON.stringify(completedList));
+  });
+
+  return (
     <div className="container App">
-      <Header />
-      <TodoList list={toDoList} handleToggle={handleToggle} handleFilter={handleFilter} />
+      <Header type="Todo List" />
+      <TodoList list={toDoList} handleDelete={handleDelete} />
       <TodoForm addTask={addTask} />
+      {/* <Header type="Completed Tasks" /> */}
+      {/* <CompletedList compList={completedList} /> */}
     </div>
   );
 }

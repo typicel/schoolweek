@@ -37,11 +37,17 @@
   }
 }
 
-.finished {
-  background-color: #ff8787;
+.bg-today {
+  background-color: #6dff91 !important;
+  color: white;
 }
 
-.card-style:hover{
+.bg-finished {
+  background-color: #ff6d6d !important;
+  color: white;
+}
+
+.hover:hover{
   cursor: pointer;
 }
 

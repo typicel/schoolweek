@@ -1,21 +1,20 @@
-import React from 'react';
-import Todo from './Todo'
-import {Button} from 'react-bootstrap'
+import React from "react";
+import Todo from "./Todo";
 
-const TodoList = ({list, handleToggle, handleFilter}) => {
-    return(
+const TodoList = ({ list, handleDelete }) => {
+  if (list) {
+    return (
       <div>
-  
-      <div className="card-group">
-        {list.map(todo => {
-          return (
-            <Todo todo={todo} handleToggle={handleToggle} />
-            )
+        <div className="card-group">
+          {list.map((todo) => {
+            return <Todo todo={todo} handleDelete={handleDelete} />;
           })}
+        </div>
       </div>
-      {list.length > 0 ? <Button variant="danger" style={{margin: '20px'}} onClick={handleFilter}> Clear Finished Tasks </Button> : null}
-      </div>
-    )
+    );
+  } else {
+    return <></>;
   }
+};
 
 export default TodoList;
