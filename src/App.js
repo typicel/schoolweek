@@ -35,28 +35,30 @@ function App() {
   const [theme, toggleTheme] = useDarkMode();
 
   const editTask = (id, task, date, notes) => {
-    let editcheck = toDoList.find((element) => element.id == id);
+    let editcheck = toDoList.find((element) => element.id === id);
 
     if (editcheck) {
       toDoList.map((element) => {
-        if (element.id == id) {
+        if (element.id === id) {
           element.task = task;
           element.date = date;
           element.notes = notes;
+          // return null;
         }
+        return null;
       });
-
-      return;
     }
   };
 
   const handleDelete = (id) => {
-    const newArr = toDoList.filter((task) => task.id != id);
+    const newArr = toDoList.filter((task) => {
+      return task.id !== parseInt(id);
+    });
     setTodoList(newArr);
   };
 
   const addTask = (task, date, notes) => {
-    if (task == "") {
+    if (task === "") {
       alert("Please enter a task name");
       return;
     }
