@@ -1,6 +1,5 @@
 import React from "react";
 import Todo from "./Todo";
-import { Button } from "react-bootstrap";
 
 const TodoList = ({ list, handleDelete, editTask, theme }) => {
   return (

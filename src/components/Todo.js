@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import "../App.css";
 import InfoModal from "./InfoModal";
 
