@@ -1,20 +1,29 @@
 import React from "react";
 import Todo from "./Todo";
+import { Button } from "react-bootstrap";
 
-const TodoList = ({ list, handleDelete }) => {
-  if (list) {
-    return (
-      <div>
+const TodoList = ({ list, handleDelete, editTask }) => {
+  return (
+    <div>
+      {list.length > 0 ? (
         <div className="card-group">
           {list.map((todo) => {
-            return <Todo todo={todo} handleDelete={handleDelete} />;
+            return (
+              <Todo
+                todo={todo}
+                handleDelete={handleDelete}
+                editTask={editTask}
+              />
+            );
           })}
         </div>
-      </div>
-    );
-  } else {
-    return <></>;
-  }
+      ) : (
+        <div className="m-3 py-5">
+          <h4>No tasks to display</h4>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default TodoList;

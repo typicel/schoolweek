@@ -1,13 +1,25 @@
 import { useState, useEffect } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
-import CompletedList from "./components/CompletedList";
+import useDarkMode from "./components/styles/useDarkMode";
+import ThemeToggle from "./components/ThemeToggle";
+import { ThemeProvider } from "styled-components";
+import {
+  GlobalStyles,
+  lightTheme,
+  darkTheme,
+} from "./components/styles/globalStyles";
 import "./App.css";
 
 const Header = ({ type }) => {
   return (
     <header>
-      <h1>{type}</h1>
+      <h1>
+        <span role="img" aria-label="pencil">
+          ✏️
+        </span>
+        {type}
+      </h1>
     </header>
   );
 };
@@ -19,16 +31,40 @@ function App() {
     return inital || "";
   });
 
+  // let initTheme = localStorage.getItem("theme");
+  // if (initTheme === undefined) {
+  //   initTheme = "light";
+  // }
+
+  const [theme, toggleTheme] = useDarkMode("light");
+
+  const editTask = (id, task, date, notes) => {
+    let editcheck = toDoList.find((element) => element.id == id);
+
+    if (editcheck) {
+      toDoList.map((element) => {
+        if (element.id == id) {
+          element.task = task;
+          element.date = date;
+          element.notes = notes;
+        }
+      });
+
+      return;
+    }
+  };
+
   const handleDelete = (id) => {
     const newArr = toDoList.filter((task) => task.id != id);
     setTodoList(newArr);
   };
 
-  const addTask = (task, date) => {
+  const addTask = (task, date, notes) => {
     if (task == "") {
       alert("Please enter a task name");
       return;
     }
+
     let dateObj = new Date(date + " 00:00");
     let today = new Date();
     let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
@@ -47,6 +83,7 @@ function App() {
         task: task,
         date: date,
         completed: false,
+        notes: notes,
       },
     ];
 
@@ -60,16 +97,24 @@ function App() {
   //use local storage
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(toDoList));
-    //localStorage.setItem("completed", JSON.stringify(completedList));
   });
+
+  const themeMode = theme === "light" ? lightTheme : darkTheme;
 
   return (
     <div className="container App">
-      <Header type="Todo List" />
-      <TodoList list={toDoList} handleDelete={handleDelete} />
-      <TodoForm addTask={addTask} />
-      {/* <Header type="Completed Tasks" /> */}
-      {/* <CompletedList compList={completedList} /> */}
+      <ThemeProvider theme={themeMode}>
+        <GlobalStyles />
+        {/* <ThemeToggle theme={theme} toggleTheme={toggleTheme} /> */}
+        <br></br>
+        <Header type=" Schoolweek" />
+        <TodoList
+          list={toDoList}
+          handleDelete={handleDelete}
+          editTask={editTask}
+        />
+        <TodoForm addTask={addTask} />
+      </ThemeProvider>
     </div>
   );
 }

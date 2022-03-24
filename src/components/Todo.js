@@ -1,8 +1,9 @@
-import React from "react";
-import { Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import "../App.css";
+import InfoModal from "./InfoModal";
 
-const Todo = ({ todo, handleDelete }) => {
+const Todo = ({ todo, handleDelete, editTask }) => {
   const handleClick = (e) => {
     e.preventDefault();
     handleDelete(e.target.id);
@@ -14,29 +15,34 @@ const Todo = ({ todo, handleDelete }) => {
   let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
   timeLeft = Math.ceil(timeLeft / 86400);
 
+  const [modalShown, setShown] = useState(false);
+  const handleShow = () => setShown(true);
+  const handleClose = () => setShown(false);
+
   return (
-    <div className="card-style d-flex justify-content-center display-inline m-3">
-      <Card
-        className={timeLeft <= 1 ? "bg-today" : ""}
-        style={{ width: "18rem" }}
-      >
-        <Card.Header>{todo.id}</Card.Header>
-        <Card.Body className="hover">
-          <Card.Title>{todo.task}</Card.Title>
+    <div>
+      {modalShown ? (
+        <InfoModal todo={todo} handleClose={handleClose} editTask={editTask} />
+      ) : null}
+      <div className="d-flex justify-content-center display-inline m-3 ">
+        <Card className="task-styles">
+          <Card.Body className="hover" onClick={handleShow}>
+            <Card.Title>{todo.task}</Card.Title>
+          </Card.Body>
           {todo.date ? (
             <Card.Text>
               {dateObj.toDateString()} ({timeLeft} day(s) left)
             </Card.Text>
           ) : null}
-        </Card.Body>
-        <Card.Footer
-          className="hover text-danger"
-          onClick={handleClick}
-          id={todo.id}
-        >
-          Done
-        </Card.Footer>
-      </Card>
+          <Card.Footer
+            className="delete-btn hover"
+            onClick={handleClick}
+            id={todo.id}
+          >
+            Done
+          </Card.Footer>
+        </Card>
+      </div>
     </div>
   );
 };
