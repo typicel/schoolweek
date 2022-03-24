@@ -3,7 +3,7 @@ import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
 import "../App.css";
 import InfoModal from "./InfoModal";
 
-const Todo = ({ todo, handleDelete, editTask }) => {
+const Todo = ({ todo, handleDelete, editTask, theme }) => {
   const handleClick = (e) => {
     e.preventDefault();
     handleDelete(e.target.id);

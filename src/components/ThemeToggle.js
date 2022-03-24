@@ -3,9 +3,11 @@ import { Button } from "react-bootstrap";
 
 const ThemeToggle = ({ theme, toggleTheme }) => {
   return (
-    <Button variant="secondary" onClick={toggleTheme}>
-      Toggle Theme
-    </Button>
+    <div className="d-flex justify-content-end">
+      <Button className="m-4" variant="secondary" onClick={toggleTheme}>
+        Toggle Theme
+      </Button>
+    </div>
   );
 };
 

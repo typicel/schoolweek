@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const useDarkMode = ({ initial }) => {
-  const [theme, setTheme] = useState("light");
+const useDarkMode = () => {
+  const [theme, setTheme] = useState(false);
 
   const toggleTheme = () => {
-    theme === "light" ? setTheme("dark") : setTheme("light");
-    console.log(`Set theme: ${theme}`);
-    localStorage.setItem("theme", theme);
+    setTheme(!theme);
   };
 
   return [theme, toggleTheme];

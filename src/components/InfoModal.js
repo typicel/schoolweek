@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
 
-const InfoModal = ({ todo, handleClose, editTask }) => {
+const InfoModal = ({ todo, handleClose, editTask, theme }) => {
   const [editingMode, setEditingMode] = useState(false);
 
   const handleEditOpen = () => {
@@ -24,6 +24,7 @@ const InfoModal = ({ todo, handleClose, editTask }) => {
         />
       ) : null}
       <Modal
+        bg="primary"
         className="modal-styles"
         size="xl"
         show="true"
@@ -32,7 +33,7 @@ const InfoModal = ({ todo, handleClose, editTask }) => {
         <Modal.Header closeButton>
           <Modal.Title>{todo.task}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="modal-styles">
           {todo.notes.length > 0 ? (
             <div data-color-mode="light">
               <div className="wmde-markdown-var"> </div>

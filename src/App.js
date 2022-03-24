@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
+import Footer from "./components/Footer";
 import useDarkMode from "./components/styles/useDarkMode";
 import ThemeToggle from "./components/ThemeToggle";
 import { ThemeProvider } from "styled-components";
@@ -31,12 +32,7 @@ function App() {
     return inital || "";
   });
 
-  // let initTheme = localStorage.getItem("theme");
-  // if (initTheme === undefined) {
-  //   initTheme = "light";
-  // }
-
-  const [theme, toggleTheme] = useDarkMode("light");
+  const [theme, toggleTheme] = useDarkMode();
 
   const editTask = (id, task, date, notes) => {
     let editcheck = toDoList.find((element) => element.id == id);
@@ -82,7 +78,6 @@ function App() {
         id: Math.floor(Math.random() * 1000),
         task: task,
         date: date,
-        completed: false,
         notes: notes,
       },
     ];
@@ -99,23 +94,24 @@ function App() {
     localStorage.setItem("data", JSON.stringify(toDoList));
   });
 
-  const themeMode = theme === "light" ? lightTheme : darkTheme;
+  const themeMode = theme === true ? darkTheme : lightTheme;
 
   return (
-    <div className="container App">
-      <ThemeProvider theme={themeMode}>
-        <GlobalStyles />
-        {/* <ThemeToggle theme={theme} toggleTheme={toggleTheme} /> */}
-        <br></br>
+    <ThemeProvider theme={themeMode}>
+      <GlobalStyles />
+      <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+      <div className="container App">
         <Header type=" Schoolweek" />
         <TodoList
           list={toDoList}
           handleDelete={handleDelete}
           editTask={editTask}
+          theme={theme}
         />
-        <TodoForm addTask={addTask} />
-      </ThemeProvider>
-    </div>
+        <TodoForm addTask={addTask} theme={theme} />
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 
