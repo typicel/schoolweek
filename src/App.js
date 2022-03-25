@@ -58,21 +58,6 @@ function App() {
   };
 
   const addTask = (task, date, notes) => {
-    if (task === "") {
-      alert("Please enter a task name");
-      return;
-    }
-
-    let dateObj = new Date(date + " 00:00");
-    let today = new Date();
-    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
-    timeLeft = Math.ceil(timeLeft / 86400);
-
-    if (timeLeft < 0) {
-      alert("Invalid date");
-      return;
-    }
-
     let copy = [...toDoList];
     copy = [
       ...copy,

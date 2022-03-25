@@ -22,7 +22,12 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
   return (
     <div>
       {modalShown ? (
-        <InfoModal todo={todo} handleClose={handleClose} editTask={editTask} />
+        <InfoModal
+          todo={todo}
+          handleClose={handleClose}
+          editTask={editTask}
+          theme={theme}
+        />
       ) : null}
       <div className="d-flex justify-content-center display-inline m-3 ">
         <Card className="task-styles">

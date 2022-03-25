@@ -24,6 +24,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
     .modal-styles{
+        background: ${({ theme }) => theme.mainbg}
       color: ${({ theme }) => theme.text};
     }
 

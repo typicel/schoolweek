@@ -7,12 +7,33 @@ const TodoForm = ({ addTask, theme }) => {
   const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
 
+  const checkDate = (due) => {
+    let dateObj = new Date(due + " 00:00");
+    let today = new Date();
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
+    timeLeft = Math.ceil(timeLeft / 86400);
+
+    let result = timeLeft < 0 ? -1 : 0;
+    return result;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(task, date, notes);
-    setTask("");
-    setDate("");
-    setNotes("");
+
+    if (checkDate(date) === -1) {
+      alert("Please enter a valid date");
+      return;
+    } else if (task.length <= 0) {
+      console.log("huh");
+      alert("Please enter a task name");
+      return;
+    } else {
+      console.log("wtf");
+      addTask(task, date, notes);
+      setTask("");
+      setNotes("");
+      setDate("");
+    }
   };
 
   let mode = theme ? "dark" : "light";
