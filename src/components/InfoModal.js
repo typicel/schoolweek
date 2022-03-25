@@ -25,7 +25,6 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
         />
       ) : null}
       <Modal
-        bg="primary"
         className="modal-styles"
         size="xl"
         show="true"

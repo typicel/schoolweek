@@ -31,19 +31,21 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
   };
 
   return (
-    <Modal size="xl" show="true">
+    <Modal size="xl" show="true" className="modal-styles">
       <Modal.Header>
-        <h3>Editing Task</h3>
+        <h3>Edit Task</h3>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <div className="d-flex display-inline">
             <FormControl
+              className="dark-input"
               type="text"
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
             />
             <FormControl
+              className="dark-input"
               type="date"
               value={newDate}
               onChange={(e) => setNewDate(e.target.value)}
