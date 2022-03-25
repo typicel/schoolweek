@@ -2,18 +2,17 @@ import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import "../App.css";
 import InfoModal from "./InfoModal";
+import Moment from "react-moment";
 
 const Todo = ({ todo, handleDelete, editTask, theme }) => {
   const handleClick = (e) => {
     e.preventDefault();
     handleDelete(e.target.id);
   };
+  let time = todo.time === "" ? "00:00" : todo.time;
 
   // For date formatting lol is there seriously not another way to do this
-  let dateObj = new Date(todo.date + " 00:00");
-  let today = new Date();
-  let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
-  timeLeft = Math.ceil(timeLeft / 86400);
+  let dateObj = new Date(todo.date + "T" + time);
 
   const [modalShown, setShown] = useState(false);
   const handleShow = () => setShown(true);
@@ -36,7 +35,8 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
           </Card.Body>
           {todo.date ? (
             <Card.Text>
-              {dateObj.toDateString()} ({timeLeft} day(s) left)
+              <Moment calendar="true">{dateObj}</Moment>
+              {/* {dateObj.toDateString()} ({timeLeft} day(s) left) */}
             </Card.Text>
           ) : null}
           <Card.Footer
