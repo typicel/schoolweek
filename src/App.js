@@ -34,7 +34,7 @@ function App() {
 
   const [theme, toggleTheme] = useDarkMode();
 
-  const editTask = (id, task, date, notes) => {
+  const editTask = (id, task, date, notes, time) => {
     let editcheck = toDoList.find((element) => element.id === id);
 
     if (editcheck) {
@@ -42,8 +42,9 @@ function App() {
         if (element.id === id) {
           element.task = task;
           element.date = date;
+          element.time = time;
           element.notes = notes;
-          // return null;
+          localStorage.setItem("data", JSON.stringify(toDoList)); // update local storage
         }
         return null;
       });
@@ -57,22 +58,7 @@ function App() {
     setTodoList(newArr);
   };
 
-  const addTask = (task, date, notes) => {
-    if (task === "") {
-      alert("Please enter a task name");
-      return;
-    }
-
-    let dateObj = new Date(date + " 00:00");
-    let today = new Date();
-    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
-    timeLeft = Math.ceil(timeLeft / 86400);
-
-    if (timeLeft < 0) {
-      alert("Invalid date");
-      return;
-    }
-
+  const addTask = (task, date, time, notes) => {
     let copy = [...toDoList];
     copy = [
       ...copy,
@@ -80,6 +66,7 @@ function App() {
         id: Math.floor(Math.random() * 1000),
         task: task,
         date: date,
+        time: time,
         notes: notes,
       },
     ];
@@ -91,7 +78,7 @@ function App() {
     setTodoList(copy);
   };
 
-  //use local storage
+  // update local storage when new task is added
   useEffect(() => {
     localStorage.setItem("data", JSON.stringify(toDoList));
   });
@@ -101,7 +88,7 @@ function App() {
   return (
     <ThemeProvider theme={themeMode}>
       <GlobalStyles />
-      <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+      <ThemeToggle toggleTheme={toggleTheme} />
       <div className="container App">
         <Header type=" Schoolweek" />
         <TodoList

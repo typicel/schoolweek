@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-const ThemeToggle = ({ theme, toggleTheme }) => {
+const ThemeToggle = ({ toggleTheme }) => {
   return (
     <div className="d-flex justify-content-end">
       <Button className="m-4" variant="secondary" onClick={toggleTheme}>

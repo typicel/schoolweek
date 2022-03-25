@@ -12,6 +12,7 @@ const TodoList = ({ list, handleDelete, editTask, theme }) => {
                 todo={todo}
                 handleDelete={handleDelete}
                 editTask={editTask}
+                theme={theme}
               />
             );
           })}

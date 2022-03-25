@@ -15,16 +15,16 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
   };
 
   return (
-    <div>
+    <div className="modal-styles">
       {editingMode ? (
         <EditorWindow
           todo={todo}
           editTask={editTask}
           handleEditClose={handleEditClose}
+          theme={theme}
         />
       ) : null}
       <Modal
-        bg="primary"
         className="modal-styles"
         size="xl"
         show="true"
@@ -33,9 +33,9 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
         <Modal.Header closeButton>
           <Modal.Title>{todo.task}</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="modal-styles">
+        <Modal.Body>
           {todo.notes.length > 0 ? (
-            <div data-color-mode="light">
+            <div data-color-mode={theme === true ? "dark" : "light"}>
               <div className="wmde-markdown-var"> </div>
               <MDEditor.Markdown source={todo.notes} />
             </div>
