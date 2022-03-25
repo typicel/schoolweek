@@ -5,17 +5,13 @@ import MDEditor from "@uiw/react-md-editor";
 const TodoForm = ({ addTask, theme }) => {
   const [task, setTask] = useState("");
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
   const [notes, setNotes] = useState("");
 
-  const checkDate = (due, time) => {
-    if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
-
-    let formatDate = time === "" ? due : due + "T" + time;
-
-    let dateObj = new Date(formatDate);
+  const checkDate = (due) => {
+    let dateObj = new Date(due + " 00:00");
     let today = new Date();
-    let timeLeft = Math.ceil((dateObj.getTime() - today.getTime()) / 86400000);
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
+    timeLeft = Math.ceil(timeLeft / 86400);
 
     let result = timeLeft < 0 ? -1 : 0;
     return result;
@@ -24,17 +20,19 @@ const TodoForm = ({ addTask, theme }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (checkDate(date, time) === -1) {
+    if (checkDate(date) === -1) {
       alert("Please enter a valid date");
+      return;
     } else if (task.length <= 0) {
       console.log("huh");
       alert("Please enter a task name");
+      return;
     } else {
-      addTask(task, date, time, notes);
+      console.log("wtf");
+      addTask(task, date, notes);
       setTask("");
       setNotes("");
       setDate("");
-      setTime("");
     }
   };
 
@@ -43,25 +41,21 @@ const TodoForm = ({ addTask, theme }) => {
   return (
     <div className="d-flex justify-content-center m-3">
       <Form className="form-styles" onSubmit={handleSubmit}>
-        <Form.Control
-          className="dark-input my-3"
-          type="text"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
-          placeholder="What needs to be done?"
-        />
         <div className="d-flex display-inline">
           <Form.Control
             className="dark-input"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            style={{ width: "20rem" }}
+            type="text"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+            placeholder="What needs to be done?"
           />
           <Form.Control
             className="dark-input"
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
+            type="date"
+            style={{ width: "16rem" }}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
 

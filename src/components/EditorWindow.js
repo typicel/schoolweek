@@ -6,23 +6,19 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
   const [newTask, setNewTask] = useState(todo.task);
   const [newDate, setNewDate] = useState(todo.date);
   const [newNotes, setNewNotes] = useState(todo.notes);
-  const [newTime, setNewTime] = useState(todo.time);
 
-  const checkDate = (due, time) => {
-    if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
-
-    let formatDate = time === "" ? due : due + "T" + time;
-
-    let dateObj = new Date(formatDate);
+  const checkDate = (due) => {
+    let dateObj = new Date(due + " 00:00");
     let today = new Date();
-    let timeLeft = Math.ceil((dateObj.getTime() - today.getTime()) / 86400000);
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
+    timeLeft = Math.ceil(timeLeft / 86400);
 
     let result = timeLeft < 0 ? -1 : 0;
     return result;
   };
 
   const saveChanges = () => {
-    if (checkDate(newDate, newTime) === -1) {
+    if (checkDate(newDate) === -1) {
       alert("Please enter a valid date");
       return;
     } else if (newTask.length <= 0) {
@@ -30,7 +26,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
       return;
     }
 
-    editTask(todo.id, newTask, newDate, newNotes, newTime);
+    editTask(todo.id, newTask, newDate, newNotes);
     handleEditClose();
   };
 
@@ -41,24 +37,18 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <FormControl
-            className="dark-input my-2"
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-          />
           <div className="d-flex display-inline">
             <FormControl
-              className="dark-input mx-2"
+              className="dark-input"
+              type="text"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+            />
+            <FormControl
+              className="dark-input"
               type="date"
               value={newDate}
               onChange={(e) => setNewDate(e.target.value)}
-            />
-            <FormControl
-              className="dark-input mx-2"
-              type="time"
-              value={newTime}
-              onChange={(e) => setNewTime(e.target.value)}
             />
           </div>
 
