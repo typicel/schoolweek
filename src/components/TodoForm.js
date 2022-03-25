@@ -27,7 +27,6 @@ const TodoForm = ({ addTask, theme }) => {
     if (checkDate(date, time) === -1) {
       alert("Please enter a valid date");
     } else if (task.length <= 0) {
-      console.log("huh");
       alert("Please enter a task name");
     } else {
       addTask(task, date, time, notes);

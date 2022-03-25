@@ -32,11 +32,7 @@ function App() {
     return inital || "";
   });
 
-  console.log("from storage: " + localStorage.getItem("theme"));
-
   const [theme, toggleTheme] = useDarkMode();
-
-  console.log("Current state: " + theme);
 
   const editTask = (id, task, date, notes, time) => {
     let editcheck = toDoList.find((element) => element.id === id);
