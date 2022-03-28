@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, ModalTitle } from "react-bootstrap";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
 
@@ -35,7 +35,7 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
         </Modal.Header>
         <Modal.Body>
           {todo.notes.length > 0 ? (
-            <div data-color-mode={theme === true ? "dark" : "light"}>
+            <div data-color-mode={theme}>
               <div className="wmde-markdown-var"> </div>
               <MDEditor.Markdown source={todo.notes} />
             </div>

@@ -37,8 +37,6 @@ const TodoForm = ({ addTask, theme }) => {
     }
   };
 
-  let mode = theme ? "dark" : "light";
-
   return (
     <div className="d-flex justify-content-center m-3">
       <Form className="form-styles" onSubmit={handleSubmit}>
@@ -64,7 +62,7 @@ const TodoForm = ({ addTask, theme }) => {
           />
         </div>
 
-        <div className="my-3" data-color-mode={mode}>
+        <div className="my-3" data-color-mode={theme}>
           <div className="wmde-markdown-var"> </div>
           <MDEditor
             width="400"

@@ -62,10 +62,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
             />
           </div>
 
-          <div
-            className="my-3"
-            data-color-mode={theme === true ? "dark" : "light"}
-          >
+          <div className="my-3" data-color-mode={theme}>
             <div className="wmde-markdown-var"> </div>
             <MDEditor height="400" value={newNotes} onChange={setNewNotes} />
           </div>
