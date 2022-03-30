@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import React from "react";
 import MDEditor from "@uiw/react-md-editor";
+import { showNotification } from "@mantine/notifications";
+import { useForm } from "@mantine/form";
+import { Button, Container, Grid } from "@mantine/core";
 
 const TodoForm = ({ addTask, theme }) => {
-  const [task, setTask] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [notes, setNotes] = useState("");
+  const form = useForm({
+    initialValues: {
+      task: "",
+      date: "",
+      time: "",
+      notes: "",
+    },
+  });
 
   const checkDate = (due, time) => {
     if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
@@ -24,60 +30,76 @@ const TodoForm = ({ addTask, theme }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (checkDate(date, time) === -1) {
-      alert("Please enter a valid date");
-    } else if (task.length <= 0) {
-      alert("Please enter a task name");
+    if (form.values.task.length <= 0) {
+      showNotification({
+        title: "❌ Invalid task name",
+        id: "hello-there",
+        disallowClose: false,
+        autoClose: 2500,
+        message: "Task name cannot be empty",
+        color: "red",
+        loading: false,
+      });
+    } else if (checkDate(form.values.date, form.values.time) === -1) {
+      showNotification({
+        title: "❌ Invalid date",
+        id: "hello-there",
+        disallowClose: false,
+        autoClose: 2500,
+        message: "Date should be after toady's date",
+        color: "red",
+        loading: false,
+      });
     } else {
-      addTask(task, date, time, notes);
-      setTask("");
-      setNotes("");
-      setDate("");
-      setTime("");
+      addTask(
+        form.values.task,
+        form.values.date,
+        form.values.time,
+        form.values.notes
+      );
+      form.reset();
     }
   };
 
-  let mode = theme ? "dark" : "light";
+  let filled = theme === "light" ? "light" : "filled";
 
   return (
-    <div className="d-flex justify-content-center m-3">
-      <Form className="form-styles" onSubmit={handleSubmit}>
-        <Form.Control
-          className="dark-input my-3"
+    <Container size="70%">
+      <form onSubmit={handleSubmit}>
+        <input
           type="text"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
+          className="form-control dark-input my-3"
           placeholder="What needs to be done?"
+          {...form.getInputProps("task")}
         />
-        <div className="d-flex display-inline">
-          <Form.Control
-            className="dark-input"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-          <Form.Control
-            className="dark-input"
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
+
+        <Grid>
+          <Grid.Col span={6}>
+            <input
+              type="date"
+              className="form-control dark-input"
+              {...form.getInputProps("date")}
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <input
+              type="time"
+              className="form-control dark-input"
+              {...form.getInputProps("time")}
+            />
+          </Grid.Col>
+        </Grid>
+
+        <div className="my-3" data-color-mode={theme}>
+          <div className="wmde-markdown-var"> </div>
+          <MDEditor width="400" height="400" {...form.getInputProps("notes")} />
         </div>
 
-        <div className="my-3" data-color-mode={mode}>
-          <div className="wmde-markdown-var"> </div>
-          <MDEditor
-            width="400"
-            height="400"
-            value={notes}
-            onChange={setNotes}
-          />
-        </div>
-        <Button type="submit" variant="primary" style={{ margin: "10px" }}>
-          Add Task{" "}
+        <Button color="blue" variant={filled} type="submit">
+          Add
         </Button>
-      </Form>
-    </div>
+      </form>
+    </Container>
   );
 };
 

@@ -1,22 +1,26 @@
 import React, { useState } from "react";
-import { Card } from "react-bootstrap";
-import "../App.css";
+import { Card, Text, Badge, Group, Button, Container } from "@mantine/core";
 import InfoModal from "./InfoModal";
 import Moment from "react-moment";
+import { showNotification } from "@mantine/notifications";
 
 const Todo = ({ todo, handleDelete, editTask, theme }) => {
   const handleClick = (e) => {
     e.preventDefault();
-    handleDelete(e.target.id);
+    showNotification({
+      message: "Task deleted ✅",
+      autoClose: 2500,
+    });
+    handleDelete(todo.id);
   };
   let time = todo.time === "" ? "00:00" : todo.time;
-
-  // For date formatting lol is there seriously not another way to do this
   let dateObj = new Date(todo.date + "T" + time);
 
   const [modalShown, setShown] = useState(false);
   const handleShow = () => setShown(true);
   const handleClose = () => setShown(false);
+
+  let filled = theme === "light" ? "light" : "filled";
 
   return (
     <div>
@@ -26,28 +30,32 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
           handleClose={handleClose}
           editTask={editTask}
           theme={theme}
+          dateObj={dateObj}
         />
       ) : null}
-      <div className="d-flex justify-content-center display-inline m-3 ">
-        <Card className="task-styles">
-          <Card.Body className="hover" onClick={handleShow}>
-            <Card.Title>{todo.task}</Card.Title>
-          </Card.Body>
-          {todo.date ? (
-            <Card.Text>
-              <Moment calendar="true">{dateObj}</Moment>
-              {/* {dateObj.toDateString()} ({timeLeft} day(s) left) */}
-            </Card.Text>
-          ) : null}
-          <Card.Footer
-            className="delete-btn hover"
-            onClick={handleClick}
-            id={todo.id}
-          >
-            Done
-          </Card.Footer>
+      <Container className="my-4">
+        <Card shadow="sm" className="task-styles">
+          <Group position="apart" onClick={handleShow}>
+            <Text weight={500}>{todo.task}</Text>
+            {todo.date ? (
+              <Badge color="purple" variant={filled}>
+                <Moment calendar="true">{dateObj}</Moment>
+              </Badge>
+            ) : null}
+          </Group>
+          <Card.Section>
+            <Button
+              variant={filled}
+              color="red"
+              fullWidth
+              style={{ marginTop: 14 }}
+              onClick={handleClick}
+            >
+              Delete
+            </Button>
+          </Card.Section>
         </Card>
-      </div>
+      </Container>
     </div>
   );
 };

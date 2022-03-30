@@ -8,13 +8,13 @@ export const GlobalStyles = createGlobalStyle`
 
     .task-styles {
         background: ${({ theme }) => theme.cardbg};
-        width: 18rem;
+        color: ${({ theme }) => theme.text};
+        width: 20rem;
         border: ${({ theme }) => theme.cardborder};
-        pointer: hover;
     }
 
     .dark-input{
-        background: ${({ theme }) => theme.mainbg};
+        background-color: ${({ theme }) => theme.mainbg};
         color: ${({ theme }) => theme.text};
     }
 
@@ -23,23 +23,29 @@ export const GlobalStyles = createGlobalStyle`
       color: ${({ theme }) => theme.text};
     }
 
-    .modal-styles .modal-content{
+    .title-bold{
+      font-weight: bold;
+    }
+
+    .modal-styles{
         background-color: ${({ theme }) => theme.modalbg};
-      color: ${({ theme }) => theme.text};
+        color: ${({ theme }) => theme.text};
     }
 
   
 `;
 
 export const lightTheme = {
+  cardborder: "none",
   body: `#fff`,
   text: `#000`,
 };
 
 export const darkTheme = {
+  invert: "invert(1)",
   modalbg: `#0D1117`,
   mainbg: `#0D1117`,
   cardbg: `#0D1117`,
-  cardborder: `1px solid white`,
+  cardborder: `1px solid #949494`,
   text: `white`,
 };

@@ -2,37 +2,39 @@ import { useState, useEffect } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
-import useDarkMode from "./components/styles/useDarkMode";
 import ThemeToggle from "./components/ThemeToggle";
+import Header from "./components/Header";
 import { ThemeProvider } from "styled-components";
-import {
-  GlobalStyles,
-  lightTheme,
-  darkTheme,
-} from "./components/styles/globalStyles";
-import "./App.css";
+import { NotificationsProvider } from "@mantine/notifications";
+import { GlobalStyles, lightTheme, darkTheme } from "./styles/globalStyles";
+import "./styles/App.css";
+import { MantineProvider } from "@mantine/core";
 
-const Header = ({ type }) => {
-  return (
-    <header>
-      <h1>
-        <span role="img" aria-label="pencil">
-          ✏️
-        </span>
-        {type}
-      </h1>
-    </header>
-  );
+const SaveSettings = (val) => {
+  localStorage.setItem("THEME", val);
+};
+
+const GetSettings = () => {
+  return localStorage.getItem("THEME") ?? "light";
 };
 
 function App() {
+  useEffect(() => {
+    applyTheme(GetSettings());
+  }, []);
+
+  const applyTheme = (theme) => {
+    setTheme(theme);
+    SaveSettings(theme);
+  };
+
   const [toDoList, setTodoList] = useState(() => {
     const saved = localStorage.getItem("data");
     const inital = JSON.parse(saved);
     return inital || "";
   });
 
-  const [theme, toggleTheme] = useDarkMode();
+  const [theme, setTheme] = useState(GetSettings());
 
   const editTask = (id, task, date, notes, time) => {
     let editcheck = toDoList.find((element) => element.id === id);
@@ -83,24 +85,28 @@ function App() {
     localStorage.setItem("data", JSON.stringify(toDoList));
   });
 
-  const themeMode = theme === true ? darkTheme : lightTheme;
+  const themeMode = theme === "dark" ? darkTheme : lightTheme;
 
   return (
-    <ThemeProvider theme={themeMode}>
-      <GlobalStyles />
-      <ThemeToggle toggleTheme={toggleTheme} />
-      <div className="container App">
-        <Header type=" Schoolweek" />
-        <TodoList
-          list={toDoList}
-          handleDelete={handleDelete}
-          editTask={editTask}
-          theme={theme}
-        />
-        <TodoForm addTask={addTask} theme={theme} />
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <MantineProvider>
+      <NotificationsProvider position="top-left">
+        <ThemeProvider theme={themeMode}>
+          <GlobalStyles />
+          <ThemeToggle applyTheme={applyTheme} theme={theme} />
+          <div className="container App">
+            <Header type=" Schoolweek" />
+            <TodoList
+              list={toDoList}
+              handleDelete={handleDelete}
+              editTask={editTask}
+              theme={theme}
+            />
+            <TodoForm addTask={addTask} theme={theme} />
+            <Footer />
+          </div>
+        </ThemeProvider>
+      </NotificationsProvider>
+    </MantineProvider>
   );
 }
 

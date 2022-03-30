@@ -1,11 +1,12 @@
 import React from "react";
+import { Group } from "@mantine/core";
 import Todo from "./Todo";
 
 const TodoList = ({ list, handleDelete, editTask, theme }) => {
   return (
-    <div>
+    <>
       {list.length > 0 ? (
-        <div className="card-group">
+        <Group position="center" spacing="sm">
           {list.map((todo) => {
             return (
               <Todo
@@ -16,13 +17,13 @@ const TodoList = ({ list, handleDelete, editTask, theme }) => {
               />
             );
           })}
-        </div>
+        </Group>
       ) : (
         <div className="m-3 py-5">
           <h4>No tasks to display</h4>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
