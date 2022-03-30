@@ -6,9 +6,9 @@ import ThemeToggle from "./components/ThemeToggle";
 import Header from "./components/Header";
 import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import GlobalS from "./styles/GlobalS";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles, lightTheme, darkTheme } from "./styles/globalStyles";
+import AddTaskButton from "./components/AddTaskButton";
 
 const SaveSettings = (val) => {
   localStorage.setItem("THEME", val);
@@ -86,21 +86,24 @@ const App = () => {
   });
 
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider>
       <NotificationsProvider position="top-left">
-        <GlobalS theme={theme} />
-        <ThemeToggle applyTheme={applyTheme} theme={theme} />
-        <div className="container App">
-          <Header type=" Schoolweek" />
-          <TodoList
-            list={toDoList}
-            handleDelete={handleDelete}
-            editTask={editTask}
-            theme={theme}
-          />
-          <TodoForm addTask={addTask} theme={theme} />
-          <Footer />
-        </div>
+        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+          <GlobalStyles />
+          <ThemeToggle applyTheme={applyTheme} theme={theme} />
+          <div className="App">
+            <Header title=" Schoolweek" />
+            <TodoList
+              list={toDoList}
+              handleDelete={handleDelete}
+              editTask={editTask}
+              theme={theme}
+            />
+
+            <AddTaskButton addTask={addTask} theme={theme} />
+            <Footer />
+          </div>
+        </ThemeProvider>
       </NotificationsProvider>
     </MantineProvider>
   );

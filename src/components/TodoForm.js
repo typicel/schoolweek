@@ -2,9 +2,10 @@ import React from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { showNotification } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
-import { Button, Container, Grid } from "@mantine/core";
+import { Button, Container, Grid, TextInput } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 
-const TodoForm = ({ addTask, theme }) => {
+const TodoForm = ({ addTask, theme, closePopover }) => {
   const form = useForm({
     initialValues: {
       task: "",
@@ -57,6 +58,7 @@ const TodoForm = ({ addTask, theme }) => {
         form.values.time,
         form.values.notes
       );
+      closePopover();
       form.reset();
     }
   };
@@ -64,22 +66,28 @@ const TodoForm = ({ addTask, theme }) => {
   let filled = theme === "light" ? "light" : "filled";
 
   return (
-    <Container size="70%">
+    <Container size="60%">
       <form onSubmit={handleSubmit}>
-        <input
+        <TextInput
+          className="my-3"
+          placeholder="What needs to be done?"
+          {...form.getInputProps("task")}
+        />
+        {/* <input
           type="text"
           className="form-control dark-input my-3"
           placeholder="What needs to be done?"
           {...form.getInputProps("task")}
-        />
+        /> */}
 
         <Grid>
           <Grid.Col span={6}>
-            <input
+            <DatePicker placeholder="Due" {...form.getInputProps("date")} />
+            {/* <input
               type="date"
               className="form-control dark-input"
               {...form.getInputProps("date")}
-            />
+            /> */}
           </Grid.Col>
           <Grid.Col span={6}>
             <input
