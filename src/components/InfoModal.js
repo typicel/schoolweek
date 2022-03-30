@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, ModalTitle } from "react-bootstrap";
+import { Modal, Button, Group } from "@mantine/core";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
 
@@ -25,29 +25,28 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
         />
       ) : null}
       <Modal
-        className="modal-styles"
-        size="xl"
-        show="true"
-        onHide={handleClose}
+        classNames={{
+          modal: "modal-styles",
+          title: "title-bold",
+        }}
+        size="1000px"
+        opened="true"
+        title={todo.task}
+        onClose={handleClose}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{todo.task}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {todo.notes.length > 0 ? (
-            <div data-color-mode={theme}>
-              <div className="wmde-markdown-var"> </div>
-              <MDEditor.Markdown source={todo.notes} />
-            </div>
-          ) : (
-            "No notes displayed"
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleEditOpen}>
+        {todo.notes.length > 0 ? (
+          <div data-color-mode={theme}>
+            <div className="wmde-markdown-var"> </div>
+            <MDEditor.Markdown source={todo.notes} />
+          </div>
+        ) : (
+          "No notes to display"
+        )}
+        <Group position="right">
+          <Button color="teal" onClick={handleEditOpen}>
             Edit
           </Button>
-        </Modal.Footer>
+        </Group>
       </Modal>
     </div>
   );

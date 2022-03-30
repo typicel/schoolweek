@@ -3,26 +3,12 @@ import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
 import ThemeToggle from "./components/ThemeToggle";
+import Header from "./components/Header";
 import { ThemeProvider } from "styled-components";
-import {
-  GlobalStyles,
-  lightTheme,
-  darkTheme,
-} from "./components/styles/globalStyles";
-import "./App.css";
-
-const Header = ({ type }) => {
-  return (
-    <header>
-      <h1>
-        <span role="img" aria-label="pencil">
-          ✏️
-        </span>
-        {type}
-      </h1>
-    </header>
-  );
-};
+import { NotificationsProvider } from "@mantine/notifications";
+import { GlobalStyles, lightTheme, darkTheme } from "./styles/globalStyles";
+import "./styles/App.css";
+import { MantineProvider } from "@mantine/core";
 
 const SaveSettings = (val) => {
   localStorage.setItem("THEME", val);
@@ -102,21 +88,25 @@ function App() {
   const themeMode = theme === "dark" ? darkTheme : lightTheme;
 
   return (
-    <ThemeProvider theme={themeMode}>
-      <GlobalStyles />
-      <ThemeToggle applyTheme={applyTheme} />
-      <div className="container App">
-        <Header type=" Schoolweek" />
-        <TodoList
-          list={toDoList}
-          handleDelete={handleDelete}
-          editTask={editTask}
-          theme={theme}
-        />
-        <TodoForm addTask={addTask} theme={theme} />
-        <Footer />
-      </div>
-    </ThemeProvider>
+    <MantineProvider>
+      <NotificationsProvider position="top-left">
+        <ThemeProvider theme={themeMode}>
+          <GlobalStyles />
+          <ThemeToggle applyTheme={applyTheme} theme={theme} />
+          <div className="container App">
+            <Header type=" Schoolweek" />
+            <TodoList
+              list={toDoList}
+              handleDelete={handleDelete}
+              editTask={editTask}
+              theme={theme}
+            />
+            <TodoForm addTask={addTask} theme={theme} />
+            <Footer />
+          </div>
+        </ThemeProvider>
+      </NotificationsProvider>
+    </MantineProvider>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Modal, Button, FormControl, Form } from "react-bootstrap";
+import { FormControl, Form } from "react-bootstrap";
+import { Modal, Button, Group } from "@mantine/core";
 import MDEditor from "@uiw/react-md-editor";
 
 const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
@@ -35,47 +36,49 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
   };
 
   return (
-    <Modal size="xl" show="true" className="modal-styles">
-      <Modal.Header>
-        <h3>Edit Task</h3>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
+    <Modal
+      classNames={{
+        modal: "modal-styles",
+        title: "title-bold",
+      }}
+      size="1000px"
+      opened="true"
+      title="Edit Task"
+      className="modal-styles"
+      onClose={handleEditClose}
+    >
+      <Form>
+        <FormControl
+          className="dark-input my-2"
+          type="text"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+        />
+        <div className="d-flex display-inline">
           <FormControl
-            className="dark-input my-2"
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
+            className="dark-input mx-2"
+            type="date"
+            value={newDate}
+            onChange={(e) => setNewDate(e.target.value)}
           />
-          <div className="d-flex display-inline">
-            <FormControl
-              className="dark-input mx-2"
-              type="date"
-              value={newDate}
-              onChange={(e) => setNewDate(e.target.value)}
-            />
-            <FormControl
-              className="dark-input mx-2"
-              type="time"
-              value={newTime}
-              onChange={(e) => setNewTime(e.target.value)}
-            />
-          </div>
+          <FormControl
+            className="dark-input mx-2"
+            type="time"
+            value={newTime}
+            onChange={(e) => setNewTime(e.target.value)}
+          />
+        </div>
 
-          <div className="my-3" data-color-mode={theme}>
-            <div className="wmde-markdown-var"> </div>
-            <MDEditor height="400" value={newNotes} onChange={setNewNotes} />
-          </div>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
+        <div className="my-3" data-color-mode={theme}>
+          <div className="wmde-markdown-var"> </div>
+          <MDEditor height="400" value={newNotes} onChange={setNewNotes} />
+        </div>
+      </Form>
+      <Group position="right">
         <Button variant="primary" onClick={saveChanges}>
           Save
         </Button>
-        <Button variant="danger" onClick={handleEditClose}>
-          Close
-        </Button>
-      </Modal.Footer>
+      </Group>
     </Modal>
   );
 };
