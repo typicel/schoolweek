@@ -4,11 +4,11 @@ import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
 import ThemeToggle from "./components/ThemeToggle";
 import Header from "./components/Header";
-import { ThemeProvider } from "styled-components";
-import { NotificationsProvider } from "@mantine/notifications";
-import { GlobalStyles, lightTheme, darkTheme } from "./styles/globalStyles";
-import "./styles/App.css";
 import { MantineProvider } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
+import GlobalS from "./styles/GlobalS";
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles, lightTheme, darkTheme } from "./styles/globalStyles";
 
 const SaveSettings = (val) => {
   localStorage.setItem("THEME", val);
@@ -18,7 +18,7 @@ const GetSettings = () => {
   return localStorage.getItem("THEME") ?? "light";
 };
 
-function App() {
+const App = () => {
   useEffect(() => {
     applyTheme(GetSettings());
   }, []);
@@ -85,29 +85,25 @@ function App() {
     localStorage.setItem("data", JSON.stringify(toDoList));
   });
 
-  const themeMode = theme === "dark" ? darkTheme : lightTheme;
-
   return (
-    <MantineProvider>
+    <MantineProvider theme={theme}>
       <NotificationsProvider position="top-left">
-        <ThemeProvider theme={themeMode}>
-          <GlobalStyles />
-          <ThemeToggle applyTheme={applyTheme} theme={theme} />
-          <div className="container App">
-            <Header type=" Schoolweek" />
-            <TodoList
-              list={toDoList}
-              handleDelete={handleDelete}
-              editTask={editTask}
-              theme={theme}
-            />
-            <TodoForm addTask={addTask} theme={theme} />
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <GlobalS theme={theme} />
+        <ThemeToggle applyTheme={applyTheme} theme={theme} />
+        <div className="container App">
+          <Header type=" Schoolweek" />
+          <TodoList
+            list={toDoList}
+            handleDelete={handleDelete}
+            editTask={editTask}
+            theme={theme}
+          />
+          <TodoForm addTask={addTask} theme={theme} />
+          <Footer />
+        </div>
       </NotificationsProvider>
     </MantineProvider>
   );
-}
+};
 
 export default App;

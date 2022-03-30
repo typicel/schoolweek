@@ -15,6 +15,7 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
   };
   let time = todo.time === "" ? "00:00" : todo.time;
   let dateObj = new Date(todo.date + "T" + time);
+  console.log(dateObj);
 
   const [modalShown, setShown] = useState(false);
   const handleShow = () => setShown(true);
@@ -24,6 +25,7 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
 
   return (
     <div>
+      {/* Show and hide the information modal*/}
       {modalShown ? (
         <InfoModal
           todo={todo}
@@ -34,7 +36,13 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
         />
       ) : null}
       <Container className="my-4">
-        <Card shadow="sm" className="task-styles">
+        <Card
+          shadow="sm"
+          className="task-styles"
+          withBorder
+          onMouseEnter={(e) => e.target.setAttribute("shadow", "xl")}
+          onMouseLeave={(e) => e.target.setAttribute("shadow", "xs")}
+        >
           <Group position="apart" onClick={handleShow}>
             <Text weight={500}>{todo.task}</Text>
             {todo.date ? (

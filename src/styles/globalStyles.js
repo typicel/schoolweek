@@ -1,6 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
+
+  .App {
+    text-align: center;
+  }
+
+  .hover{
+    cursor: pointer;
+  }
+
     body {
         background-color: ${({ theme }) => theme.mainbg};
         color: ${({ theme }) => theme.text};
