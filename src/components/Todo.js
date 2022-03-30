@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Text, Badge, Group, Button } from "@mantine/core";
+import { Card, Text, Badge, Group, Button, Container } from "@mantine/core";
 import InfoModal from "./InfoModal";
 import Moment from "react-moment";
 import { showNotification } from "@mantine/notifications";
@@ -8,12 +8,12 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
   const handleClick = (e) => {
     e.preventDefault();
     showNotification({
-      message: "Task deleted",
+      message: "Task deleted ✅",
+      autoClose: 2500,
     });
     handleDelete(todo.id);
   };
   let time = todo.time === "" ? "00:00" : todo.time;
-
   let dateObj = new Date(todo.date + "T" + time);
 
   const [modalShown, setShown] = useState(false);
@@ -30,9 +30,10 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
           handleClose={handleClose}
           editTask={editTask}
           theme={theme}
+          dateObj={dateObj}
         />
       ) : null}
-      <div className="d-flex justify-content-center display-inline m-3">
+      <Container className="my-4">
         <Card shadow="sm" className="task-styles">
           <Group position="apart" onClick={handleShow}>
             <Text weight={500}>{todo.task}</Text>
@@ -54,7 +55,7 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
             </Button>
           </Card.Section>
         </Card>
-      </div>
+      </Container>
     </div>
   );
 };

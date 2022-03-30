@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Modal, Button, Group } from "@mantine/core";
+import { Modal, Button, Group, Badge } from "@mantine/core";
+import Moment from "react-moment";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
 
-const InfoModal = ({ todo, handleClose, editTask, theme }) => {
+const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
   const [editingMode, setEditingMode] = useState(false);
 
   const handleEditOpen = () => {
@@ -13,6 +14,8 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
   const handleEditClose = () => {
     setEditingMode(false);
   };
+
+  let filled = theme === "light" ? "light" : "filled";
 
   return (
     <div className="modal-styles">
@@ -29,21 +32,30 @@ const InfoModal = ({ todo, handleClose, editTask, theme }) => {
           modal: "modal-styles",
           title: "title-bold",
         }}
-        size="1000px"
+        withCloseButton={false}
+        size="70%"
         opened="true"
-        title={todo.task}
         onClose={handleClose}
       >
-        {todo.notes.length > 0 ? (
-          <div data-color-mode={theme}>
-            <div className="wmde-markdown-var"> </div>
-            <MDEditor.Markdown source={todo.notes} />
-          </div>
-        ) : (
-          "No notes to display"
-        )}
+        <Group position="left">
+          <h4 className="title-bold">{todo.task}</h4>
+          <Badge color="purple" variant={filled}>
+            <Moment calendar="true">{dateObj}</Moment>
+          </Badge>
+        </Group>
+
+        <Group>
+          {todo.notes.length > 0 ? (
+            <div data-color-mode={theme}>
+              <div className="wmde-markdown-var"> </div>
+              <MDEditor.Markdown source={todo.notes} />
+            </div>
+          ) : (
+            "No notes to display"
+          )}
+        </Group>
         <Group position="right">
-          <Button color="teal" onClick={handleEditOpen}>
+          <Button color="teal" variant={filled} onClick={handleEditOpen}>
             Edit
           </Button>
         </Group>

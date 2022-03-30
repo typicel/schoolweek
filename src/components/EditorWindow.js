@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import { FormControl, Form } from "react-bootstrap";
-import { Modal, Button, Group } from "@mantine/core";
+import React from "react";
+import { Modal, Button, Group, Grid } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import MDEditor from "@uiw/react-md-editor";
 
 const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
-  const [newTask, setNewTask] = useState(todo.task);
-  const [newDate, setNewDate] = useState(todo.date);
-  const [newNotes, setNewNotes] = useState(todo.notes);
-  const [newTime, setNewTime] = useState(todo.time);
+  const form = useForm({
+    initialValues: {
+      task: todo.task,
+      date: todo.date,
+      time: todo.time,
+      notes: todo.notes,
+    },
+  });
 
   const checkDate = (due, time) => {
     if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
@@ -23,17 +27,25 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
   };
 
   const saveChanges = () => {
-    if (checkDate(newDate, newTime) === -1) {
+    if (checkDate(form.values.date, form.values.time) === -1) {
       alert("Please enter a valid date");
       return;
-    } else if (newTask.length <= 0) {
+    } else if (form.values.task.length <= 0) {
       alert("Please enter a task name");
       return;
     }
 
-    editTask(todo.id, newTask, newDate, newNotes, newTime);
+    editTask(
+      todo.id,
+      form.values.task,
+      form.values.date,
+      form.values.notes,
+      form.values.time
+    );
     handleEditClose();
   };
+
+  let filled = theme === "light" ? "light" : "filled";
 
   return (
     <Modal
@@ -45,40 +57,46 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
       opened="true"
       title="Edit Task"
       className="modal-styles"
+      closeOnClickOutside={false}
+      closeOnEsc={false}
       onClose={handleEditClose}
     >
-      <Form>
-        <FormControl
-          className="dark-input my-2"
+      <form onSubmit={saveChanges}>
+        <input
           type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
+          className="form-control dark-input my-3"
+          placeholder="What needs to be done?"
+          {...form.getInputProps("task")}
         />
-        <div className="d-flex display-inline">
-          <FormControl
-            className="dark-input mx-2"
-            type="date"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
-          />
-          <FormControl
-            className="dark-input mx-2"
-            type="time"
-            value={newTime}
-            onChange={(e) => setNewTime(e.target.value)}
-          />
-        </div>
+
+        <Grid>
+          <Grid.Col span={6}>
+            <input
+              type="date"
+              className="form-control dark-input"
+              {...form.getInputProps("date")}
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <input
+              type="time"
+              className="form-control dark-input"
+              {...form.getInputProps("time")}
+            />
+          </Grid.Col>
+        </Grid>
 
         <div className="my-3" data-color-mode={theme}>
           <div className="wmde-markdown-var"> </div>
-          <MDEditor height="400" value={newNotes} onChange={setNewNotes} />
+          <MDEditor width="400" height="400" {...form.getInputProps("notes")} />
         </div>
-      </Form>
-      <Group position="right">
-        <Button variant="primary" onClick={saveChanges}>
-          Save
-        </Button>
-      </Group>
+
+        <Group position="right">
+          <Button color="blue" variant={filled} type="submit">
+            Save
+          </Button>
+        </Group>
+      </form>
     </Modal>
   );
 };
