@@ -18,7 +18,7 @@ export const GlobalStyles = createGlobalStyle`
     .task-styles {
         background: ${({ theme }) => theme.cardbg};
         color: ${({ theme }) => theme.text};
-        width: 20rem;
+        width: 19rem;
         border: ${({ theme }) => theme.cardborder};
     }
 
@@ -36,6 +36,10 @@ export const GlobalStyles = createGlobalStyle`
       font-weight: bold;
     }
 
+    .shadow-style{
+      shadow: 
+    }
+
     .modal-styles{
         background-color: ${({ theme }) => theme.modalbg};
         color: ${({ theme }) => theme.text};
@@ -51,7 +55,6 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-  invert: "invert(1)",
   modalbg: `#0D1117`,
   mainbg: `#0D1117`,
   cardbg: `#0D1117`,

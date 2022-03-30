@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Switch } from "@mantine/core";
+import { FiMoon, FiSun } from "react-icons/fi";
 
 const ThemeToggle = ({ applyTheme, theme }) => {
   const [checked, setChecked] = useState(theme === "dark" ? true : false);
@@ -8,7 +9,9 @@ const ThemeToggle = ({ applyTheme, theme }) => {
     <div className="d-flex justify-content-end m-3">
       <Switch
         checked={checked}
-        size="md"
+        size="lg"
+        onLabel={<FiMoon />}
+        offLabel={<FiSun />}
         onChange={(event) => {
           setChecked(event.currentTarget.checked);
           let newTheme = event.currentTarget.checked ? "dark" : "light";

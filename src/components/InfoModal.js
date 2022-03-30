@@ -35,6 +35,8 @@ const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
         withCloseButton={false}
         size="70%"
         opened="true"
+        transition="fade"
+        transitionDuration={600}
         onClose={handleClose}
       >
         <Group position="left">

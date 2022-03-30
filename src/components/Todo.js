@@ -43,17 +43,14 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
           onMouseEnter={(e) => e.target.setAttribute("shadow", "xl")}
           onMouseLeave={(e) => e.target.setAttribute("shadow", "xs")}
         >
-          <Card.Section></Card.Section>
-          <Card.Section className="p-2">
-            <Group position="apart" onClick={handleShow}>
-              <Text weight={500}>{todo.task}</Text>
-              {todo.date ? (
-                <Badge color="purple" variant={filled}>
-                  <Moment calendar="true">{dateObj}</Moment>
-                </Badge>
-              ) : null}
-            </Group>
-          </Card.Section>
+          <Group position="apart" onClick={handleShow}>
+            <Text weight={500}>{todo.task}</Text>
+            {todo.date ? (
+              <Badge color="purple" variant={filled}>
+                <Moment calendar="true">{dateObj}</Moment>
+              </Badge>
+            ) : null}
+          </Group>
           <Card.Section>
             <Button
               variant={filled}

@@ -1,34 +1,47 @@
-import { Popover, Badge } from "@mantine/core";
+import { Popover, Button, Group } from "@mantine/core";
 import React, { useState } from "react";
 import TodoForm from "./TodoForm";
+import { FiPlus } from "react-icons/fi";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const AddTaskButton = ({ addTask, theme }) => {
   const [opened, setOpened] = useState(false);
 
-  const closePopover = () => {
-    setOpened(false);
+  const togglePopover = (val) => {
+    setOpened(val);
   };
 
   return (
-    <Popover
-      opened={opened}
-      onClose={() => setOpened(false)}
-      position="bottom"
-      placement="center"
-      withArrow
-      trapFocus={false}
-      closeOnEscape={false}
-      transition="pop-top-left"
-      width={260}
-      styles={{ body: { pointerEvents: "none" } }}
-      target={
-        <Badge onClick={() => setOpened(true)}>
-          Hover badge to see popover
-        </Badge>
-      }
-    >
-      <TodoForm addTask={addTask} theme={theme} closePopover={closePopover} />
-    </Popover>
+    <Group position="center" style={{ marginBottom: "30%" }}>
+      <Popover
+        opened={opened}
+        onClose={() => togglePopover(false)}
+        position="bottom"
+        placement="center"
+        withCloseButton
+        closeOnClickOutside={false}
+        transition="fade"
+        shadow="xl"
+        title="Add a new task"
+        width={600}
+        target={
+          <Button
+            color="blue"
+            variant={theme === "light" ? "light" : "filled"}
+            onClick={() => togglePopover(!opened)}
+          >
+            Add Task
+          </Button>
+        }
+      >
+        <TodoForm
+          addTask={addTask}
+          theme={theme}
+          togglePopover={togglePopover}
+        />
+      </Popover>
+    </Group>
   );
 };
 

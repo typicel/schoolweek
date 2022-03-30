@@ -86,7 +86,13 @@ const App = () => {
   });
 
   return (
-    <MantineProvider>
+    <MantineProvider
+      theme={{
+        shadows: {
+          xl: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+        },
+      }}
+    >
       <NotificationsProvider position="top-left">
         <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
           <GlobalStyles />

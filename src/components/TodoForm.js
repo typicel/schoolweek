@@ -2,10 +2,10 @@ import React from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { showNotification } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
-import { Button, Container, Grid, TextInput } from "@mantine/core";
+import { Button, Container, Grid, Group, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 
-const TodoForm = ({ addTask, theme, closePopover }) => {
+const TodoForm = ({ addTask, theme, togglePopover }) => {
   const form = useForm({
     initialValues: {
       task: "",
@@ -58,56 +58,37 @@ const TodoForm = ({ addTask, theme, closePopover }) => {
         form.values.time,
         form.values.notes
       );
-      closePopover();
       form.reset();
+      togglePopover(false);
     }
   };
 
   let filled = theme === "light" ? "light" : "filled";
 
   return (
-    <Container size="60%">
-      <form onSubmit={handleSubmit}>
-        <TextInput
-          className="my-3"
-          placeholder="What needs to be done?"
-          {...form.getInputProps("task")}
+    <form onSubmit={handleSubmit}>
+      <TextInput
+        className="my-2"
+        placeholder="What needs to be done?"
+        {...form.getInputProps("task")}
+      />
+
+      <Group position="left" className="my-2" grow>
+        <DatePicker
+          withinPortal={false}
+          placeholder="Due"
+          {...form.getInputProps("date")}
         />
-        {/* <input
-          type="text"
-          className="form-control dark-input my-3"
-          placeholder="What needs to be done?"
-          {...form.getInputProps("task")}
-        /> */}
-
-        <Grid>
-          <Grid.Col span={6}>
-            <DatePicker placeholder="Due" {...form.getInputProps("date")} />
-            {/* <input
-              type="date"
-              className="form-control dark-input"
-              {...form.getInputProps("date")}
-            /> */}
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <input
-              type="time"
-              className="form-control dark-input"
-              {...form.getInputProps("time")}
-            />
-          </Grid.Col>
-        </Grid>
-
-        <div className="my-3" data-color-mode={theme}>
-          <div className="wmde-markdown-var"> </div>
-          <MDEditor width="400" height="400" {...form.getInputProps("notes")} />
-        </div>
-
-        <Button color="blue" variant={filled} type="submit">
-          Add
-        </Button>
-      </form>
-    </Container>
+        <input
+          type="time"
+          className="form-control dark-input"
+          {...form.getInputProps("time")}
+        />
+      </Group>
+      <Button color="green" variant={filled} type="submit">
+        Add
+      </Button>
+    </form>
   );
 };
 
