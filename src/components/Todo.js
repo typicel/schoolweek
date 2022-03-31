@@ -13,19 +13,17 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
     });
     handleDelete(todo.id);
   };
-  let time = todo.time === "" ? "00:00" : todo.time;
-  let dateObj = new Date(todo.date + "T" + time);
-  console.log(dateObj);
+
+  let time = new Date(todo.time);
+  let date = new Date(todo.date);
+  let dateObj = new Date(date.toDateString() + " " + time.toTimeString());
 
   const [modalShown, setShown] = useState(false);
   const handleShow = () => setShown(true);
   const handleClose = () => setShown(false);
 
-  let filled = theme === "light" ? "light" : "filled";
-
   return (
     <div>
-      {/* Show and hide the information modal*/}
       {modalShown ? (
         <InfoModal
           todo={todo}
@@ -36,24 +34,18 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
         />
       ) : null}
       <Container className="my-4">
-        <Card
-          shadow="sm"
-          className="task-styles"
-          withBorder
-          onMouseEnter={(e) => e.target.setAttribute("shadow", "xl")}
-          onMouseLeave={(e) => e.target.setAttribute("shadow", "xs")}
-        >
+        <Card shadow="sm" style={{ width: "19rem" }}>
           <Group position="apart" onClick={handleShow}>
             <Text weight={500}>{todo.task}</Text>
             {todo.date ? (
-              <Badge color="purple" variant={filled}>
+              <Badge color="purple" variant="light">
                 <Moment calendar="true">{dateObj}</Moment>
               </Badge>
             ) : null}
           </Group>
           <Card.Section>
             <Button
-              variant={filled}
+              variant="light"
               color="red"
               fullWidth
               style={{ marginTop: 14 }}

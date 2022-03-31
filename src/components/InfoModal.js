@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Group, Badge } from "@mantine/core";
+import { FiEdit3 } from "react-icons/fi";
 import Moment from "react-moment";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
@@ -14,8 +15,6 @@ const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
   const handleEditClose = () => {
     setEditingMode(false);
   };
-
-  let filled = theme === "light" ? "light" : "filled";
 
   return (
     <div className="modal-styles">
@@ -40,15 +39,15 @@ const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
         onClose={handleClose}
       >
         <Group position="left">
-          <h4 className="title-bold">{todo.task}</h4>
-          <Badge color="purple" variant={filled}>
+          <h4>{todo.task}</h4>
+          <Badge color="purple" variant="light">
             <Moment calendar="true">{dateObj}</Moment>
           </Badge>
         </Group>
 
         <Group>
           {todo.notes.length > 0 ? (
-            <div data-color-mode={theme}>
+            <div data-color-mode="light">
               <div className="wmde-markdown-var"> </div>
               <MDEditor.Markdown source={todo.notes} />
             </div>
@@ -57,8 +56,8 @@ const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
           )}
         </Group>
         <Group position="right">
-          <Button color="teal" variant={filled} onClick={handleEditOpen}>
-            Edit
+          <Button color="teal" variant="light" onClick={handleEditOpen}>
+            <FiEdit3 size={20} />
           </Button>
         </Group>
       </Modal>

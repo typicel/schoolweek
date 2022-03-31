@@ -1,56 +1,31 @@
 import { useState, useEffect } from "react";
-import TodoForm from "./components/TodoForm";
+import { MantineProvider, ColorSchemeProvider, Paper } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
+import { useHotkeys, useLocalStorageValue } from "@mantine/hooks";
+
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
-import ThemeToggle from "./components/ThemeToggle";
 import Header from "./components/Header";
-import { MantineProvider } from "@mantine/core";
-import { NotificationsProvider } from "@mantine/notifications";
-import { ThemeProvider } from "styled-components";
-import { GlobalStyles, lightTheme, darkTheme } from "./styles/globalStyles";
 import AddTaskButton from "./components/AddTaskButton";
-
-const SaveSettings = (val) => {
-  localStorage.setItem("THEME", val);
-};
-
-const GetSettings = () => {
-  return localStorage.getItem("THEME") ?? "light";
-};
+import ThemeToggle from "./components/ThemeToggle";
 
 const App = () => {
-  useEffect(() => {
-    applyTheme(GetSettings());
-  }, []);
-
-  const applyTheme = (theme) => {
-    setTheme(theme);
-    SaveSettings(theme);
-  };
-
   const [toDoList, setTodoList] = useState(() => {
     const saved = localStorage.getItem("data");
     const inital = JSON.parse(saved);
     return inital || "";
   });
 
-  const [theme, setTheme] = useState(GetSettings());
-
   const editTask = (id, task, date, notes, time) => {
-    let editcheck = toDoList.find((element) => element.id === id);
-
-    if (editcheck) {
-      toDoList.map((element) => {
-        if (element.id === id) {
-          element.task = task;
-          element.date = date;
-          element.time = time;
-          element.notes = notes;
-          localStorage.setItem("data", JSON.stringify(toDoList)); // update local storage
-        }
-        return null;
-      });
-    }
+    toDoList.map((element) => {
+      if (element.id === id) {
+        element.task = task;
+        element.date = date;
+        element.time = time;
+        element.notes = notes;
+        localStorage.setItem("data", JSON.stringify(toDoList));
+      }
+    });
   };
 
   const handleDelete = (id) => {
@@ -85,33 +60,41 @@ const App = () => {
     localStorage.setItem("data", JSON.stringify(toDoList));
   });
 
-  return (
-    <MantineProvider
-      theme={{
-        shadows: {
-          xl: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-        },
-      }}
-    >
-      <NotificationsProvider position="top-left">
-        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-          <GlobalStyles />
-          <ThemeToggle applyTheme={applyTheme} theme={theme} />
-          <div className="App">
-            <Header title=" Schoolweek" />
-            <TodoList
-              list={toDoList}
-              handleDelete={handleDelete}
-              editTask={editTask}
-              theme={theme}
-            />
+  const [colorScheme, setColorScheme] = useLocalStorageValue({
+    key: "mantine-color-scheme",
+    defaultValue: "light",
+  });
 
-            <AddTaskButton addTask={addTask} theme={theme} />
-            <Footer />
-          </div>
-        </ThemeProvider>
-      </NotificationsProvider>
-    </MantineProvider>
+  const toggleColorScheme = (value) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  useHotkeys([["mod+J", () => toggleColorScheme()]]);
+
+  return (
+    <div className="App" style={{ textAlign: "center" }}>
+      <MantineProvider theme={{ colorScheme }}>
+        <ColorSchemeProvider
+          colorScheme={colorScheme}
+          toggleColorScheme={toggleColorScheme}
+        >
+          <NotificationsProvider position="top-left">
+            <Paper>
+              <ThemeToggle />
+              <Header title=" Schoolweek" />
+              <TodoList
+                list={toDoList}
+                handleDelete={handleDelete}
+                editTask={editTask}
+                theme={colorScheme}
+              />
+
+              <AddTaskButton addTask={addTask} />
+              <Footer />
+            </Paper>
+          </NotificationsProvider>
+        </ColorSchemeProvider>
+      </MantineProvider>
+    </div>
   );
 };
 

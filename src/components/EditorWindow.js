@@ -1,51 +1,83 @@
 import React from "react";
-import { Modal, Button, Group, Grid } from "@mantine/core";
+import { Modal, Button, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { FiCalendar, FiClock } from "react-icons/fi";
 import MDEditor from "@uiw/react-md-editor";
+import { DatePicker, TimeInput } from "@mantine/dates";
+import { showNotification } from "@mantine/notifications";
 
 const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
+  console.log("date in editor " + todo.date);
+  console.log("time in editor " + todo.time);
+
   const form = useForm({
     initialValues: {
-      task: todo.task,
-      date: todo.date,
-      time: todo.time,
-      notes: todo.notes,
+      newTask: todo.task,
+      newDate: todo.date,
+      newTime: todo.time,
+      newNotes: todo.notes,
     },
   });
 
   const checkDate = (due, time) => {
     if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
 
-    let formatDate = time === "" ? due : due + "T" + time;
+    let date = new Date(due);
+    let thetime = new Date(time);
 
-    let dateObj = new Date(formatDate);
+    let dateObj = new Date(date.toDateString() + " " + thetime.toTimeString());
     let today = new Date();
-    let timeLeft = Math.ceil((dateObj.getTime() - today.getTime()) / 86400000);
 
-    let result = timeLeft < 0 ? -1 : 0;
+    //Number of seconds between due date and right now
+    let timeLeft = (dateObj - today) / 1000;
+
+    let result = timeLeft < 0 ? -2 : 0;
     return result;
   };
 
-  const saveChanges = () => {
-    if (checkDate(form.values.date, form.values.time) === -1) {
-      alert("Please enter a valid date");
+  const saveChanges = (e) => {
+    e.preventDefault();
+    let dateCheck = checkDate(form.values.date, form.values.time);
+
+    if (form.values.task.length <= 0) {
+      showNotification({
+        title: "❌ Invalid task name",
+        id: "hello-there",
+        disallowClose: false,
+        autoClose: 2500,
+        message: "Task name cannot be empty",
+        color: "red",
+      });
       return;
-    } else if (form.values.task.length <= 0) {
-      alert("Please enter a task name");
-      return;
+    } else if (dateCheck === -1) {
+      showNotification({
+        title: "❌ Invalid date",
+        id: "hello-there",
+        disallowClose: false,
+        autoClose: 2500,
+        message: "Date should be after toady's date",
+        color: "red",
+      });
+    } else if (dateCheck === -2) {
+      showNotification({
+        title: "❌ Invalid date",
+        id: "hello-there",
+        disallowClose: false,
+        autoClose: 2500,
+        message: "Please enter a date",
+        color: "red",
+      });
+    } else {
+      editTask(
+        todo.id,
+        form.values.newTask,
+        form.values.newDate,
+        form.values.newNotes,
+        form.values.newTime
+      );
+      handleEditClose();
     }
-
-    editTask(
-      todo.id,
-      form.values.task,
-      form.values.date,
-      form.values.notes,
-      form.values.time
-    );
-    handleEditClose();
   };
-
-  let filled = theme === "light" ? "light" : "filled";
 
   return (
     <Modal
@@ -62,38 +94,34 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
       onClose={handleEditClose}
     >
       <form onSubmit={saveChanges}>
-        <input
-          type="text"
-          className="form-control dark-input my-3"
+        <TextInput
+          className="my-2"
           placeholder="What needs to be done?"
-          {...form.getInputProps("task")}
+          {...form.getInputProps("newTask")}
         />
 
-        <Grid>
-          <Grid.Col span={6}>
-            <input
-              type="date"
-              className="form-control dark-input"
-              {...form.getInputProps("date")}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <input
-              type="time"
-              className="form-control dark-input"
-              {...form.getInputProps("time")}
-            />
-          </Grid.Col>
-        </Grid>
+        <Group position="left" className="my-2" grow>
+          <DatePicker
+            withinPortal={false}
+            placeholder="Due"
+            icon={<FiCalendar />}
+            {...form.getInputProps("newDate")}
+          />
+          <TimeInput
+            icon={<FiClock />}
+            format="12"
+            {...form.getInputProps("newTime")}
+          />
+        </Group>
 
-        <div className="my-3" data-color-mode={theme}>
+        <div data-color-mode={theme}>
           <div className="wmde-markdown-var"> </div>
-          <MDEditor width="400" height="400" {...form.getInputProps("notes")} />
+          <MDEditor {...form.getInputProps("newNotes")} />
         </div>
 
         <Group position="right">
-          <Button color="blue" variant={filled} type="submit">
-            Save
+          <Button className="my-3" color="green" variant="light" type="submit">
+            Save Changes
           </Button>
         </Group>
       </form>
