@@ -16,7 +16,7 @@ const TodoForm = ({ addTask, togglePopover }) => {
   });
 
   const checkDate = (due, time) => {
-    if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
+    if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
 
     let date = new Date(due);
     let thetime = new Date(time);
@@ -45,7 +45,7 @@ const TodoForm = ({ addTask, togglePopover }) => {
         color: "red",
       });
       return;
-    } else if (dateCheck === -1) {
+    } else if (dateCheck === -2) {
       showNotification({
         title: "❌ Invalid date",
         id: "hello-there",
@@ -54,13 +54,13 @@ const TodoForm = ({ addTask, togglePopover }) => {
         message: "Date should be after toady's date",
         color: "red",
       });
-    } else if (dateCheck === -2) {
+    } else if (dateCheck === -1) {
       showNotification({
         title: "❌ Invalid date",
         id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
-        message: "Please enter a date",
+        message: "Please enter a date and time",
         color: "red",
       });
     } else {

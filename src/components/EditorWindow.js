@@ -7,9 +7,6 @@ import { DatePicker, TimeInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
 
 const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
-  console.log("date in editor " + todo.date);
-  console.log("time in editor " + todo.time);
-
   const form = useForm({
     initialValues: {
       newTask: todo.task,
@@ -20,7 +17,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
   });
 
   const checkDate = (due, time) => {
-    if (due === "" && time !== "") return -1; //User shouldn't be able to enter a time without a date
+    if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
 
     let date = new Date(due);
     let thetime = new Date(time);
@@ -42,7 +39,6 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
     if (form.values.newTask.length <= 0) {
       showNotification({
         title: "❌ Invalid task name",
-        id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
         message: "Task name cannot be empty",
@@ -51,7 +47,6 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
     } else if (dateCheck === -2) {
       showNotification({
         title: "❌ Invalid date",
-        id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
         message: "Date should be after toady's date",
@@ -63,7 +58,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
         id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
-        message: "Please enter a date",
+        message: "Please enter a date and time",
         color: "red",
       });
     } else {

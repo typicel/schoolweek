@@ -25,6 +25,7 @@ const App = () => {
         element.notes = notes;
         localStorage.setItem("data", JSON.stringify(toDoList));
       }
+      return null;
     });
   };
 
