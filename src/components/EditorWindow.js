@@ -37,9 +37,9 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
 
   const saveChanges = (e) => {
     e.preventDefault();
-    let dateCheck = checkDate(form.values.date, form.values.time);
+    let dateCheck = checkDate(form.values.newDate, form.values.newTime);
 
-    if (form.values.task.length <= 0) {
+    if (form.values.newTask.length <= 0) {
       showNotification({
         title: "❌ Invalid task name",
         id: "hello-there",
@@ -48,8 +48,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
         message: "Task name cannot be empty",
         color: "red",
       });
-      return;
-    } else if (dateCheck === -1) {
+    } else if (dateCheck === -2) {
       showNotification({
         title: "❌ Invalid date",
         id: "hello-there",
@@ -58,7 +57,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
         message: "Date should be after toady's date",
         color: "red",
       });
-    } else if (dateCheck === -2) {
+    } else if (dateCheck === -1) {
       showNotification({
         title: "❌ Invalid date",
         id: "hello-there",
@@ -76,6 +75,10 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
         form.values.newTime
       );
       handleEditClose();
+      showNotification({
+        message: "Task Updated ✅",
+        autoClose: 2500,
+      });
     }
   };
 
