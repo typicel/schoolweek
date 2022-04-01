@@ -4,7 +4,7 @@ import Todo from "./Todo";
 
 const TodoList = ({ list, handleDelete, editTask, theme }) => {
   return (
-    <>
+    <div style={{ marginBottom: "100px" }}>
       {list.length > 0 ? (
         <Group position="center" spacing="sm">
           {list.map((todo) => {
@@ -23,7 +23,7 @@ const TodoList = ({ list, handleDelete, editTask, theme }) => {
           <h4>No tasks to display</h4>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

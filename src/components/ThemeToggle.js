@@ -1,23 +1,24 @@
 import React, { useState } from "react";
-import { Switch } from "@mantine/core";
+import { useMantineColorScheme, Switch, Group } from "@mantine/core";
 
-const ThemeToggle = ({ applyTheme, theme }) => {
-  const [checked, setChecked] = useState(theme === "dark" ? true : false);
+const LightAndDarkModeButton = () => {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const [checked, setChecked] = useState(colorScheme === "dark" ? true : false);
 
   return (
-    <div className="d-flex justify-content-end m-3">
+    <Group position="right">
       <Switch
         checked={checked}
-        size="md"
+        className="m-3"
+        size="lg"
         onChange={(event) => {
           setChecked(event.currentTarget.checked);
-          let newTheme = event.currentTarget.checked ? "dark" : "light";
-          applyTheme(newTheme);
+          toggleColorScheme();
         }}
         color="dark"
       />
-    </div>
+    </Group>
   );
 };
 
-export default ThemeToggle;
+export default LightAndDarkModeButton;

@@ -1,13 +1,13 @@
 import React from "react";
 
-const Header = ({ type }) => {
+const Header = (props) => {
   return (
     <header>
       <h1>
         <span role="img" aria-label="pencil">
           ✏️
         </span>
-        {type}
+        {props.title}
       </h1>
     </header>
   );
