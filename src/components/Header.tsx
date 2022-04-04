@@ -1,13 +1,17 @@
 import React from "react";
 
-const Header = (props) => {
+interface Props {
+  title: string;
+}
+
+const Header = ({ title }: Props) => {
   return (
     <header>
       <h1>
         <span role="img" aria-label="pencil">
           ✏️
         </span>
-        {props.title}
+        {title}
       </h1>
     </header>
   );

@@ -5,7 +5,12 @@ import { Button, Group, TextInput } from "@mantine/core";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { FiCalendar, FiClock } from "react-icons/fi";
 
-const TodoForm = ({ addTask, togglePopover }) => {
+interface Props {
+  addTask: Function;
+  togglePopover: Function;
+}
+
+const TodoForm = ({ addTask, togglePopover }: Props) => {
   const form = useForm({
     initialValues: {
       task: "",
@@ -15,7 +20,7 @@ const TodoForm = ({ addTask, togglePopover }) => {
     },
   });
 
-  const checkDate = (due, time) => {
+  const checkDate = (due: string, time: string) => {
     if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
 
     let date = new Date(due);
@@ -25,13 +30,13 @@ const TodoForm = ({ addTask, togglePopover }) => {
     let today = new Date();
 
     //Number of seconds between due date and right now
-    let timeLeft = (dateObj - today) / 1000;
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
 
     let result = timeLeft < 0 ? -2 : 0;
     return result;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let dateCheck = checkDate(form.values.date, form.values.time);
 

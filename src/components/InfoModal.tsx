@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import { Modal, Button, Group, Badge } from "@mantine/core";
+import { Modal, Button, Group, Badge, ColorScheme } from "@mantine/core";
 import { FiEdit3 } from "react-icons/fi";
 import Moment from "react-moment";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
+import "../editor.css";
 
-const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
+interface Todo {
+  id: number;
+  task: string;
+  notes: string;
+  date: string;
+  time: string;
+}
+
+interface Props {
+  todo: Todo;
+  toggleInfo: Function;
+  editTask: Function;
+  theme: ColorScheme;
+  dateObj: Date;
+}
+
+const InfoModal = ({ todo, toggleInfo, editTask, theme, dateObj }: Props) => {
   const [editingMode, setEditingMode] = useState(false);
 
-  const handleEditOpen = () => {
-    setEditingMode(true);
-  };
-
-  const handleEditClose = () => {
-    setEditingMode(false);
-  };
+  const toggleEditMode = () => setEditingMode(!editingMode);
 
   return (
     <div className="modal-styles">
@@ -22,7 +33,7 @@ const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
         <EditorWindow
           todo={todo}
           editTask={editTask}
-          handleEditClose={handleEditClose}
+          toggleEditMode={toggleEditMode}
           theme={theme}
         />
       ) : null}
@@ -31,32 +42,35 @@ const InfoModal = ({ todo, handleClose, editTask, theme, dateObj }) => {
           modal: "modal-styles",
           title: "title-bold",
         }}
-        withCloseButton={false}
         size="70%"
-        opened="true"
+        withCloseButton={false}
+        opened={true}
         transition="fade"
         transitionDuration={600}
-        onClose={handleClose}
+        onClose={() => toggleInfo()}
       >
         <Group position="left">
           <h4>{todo.task}</h4>
           <Badge color="purple" variant="light">
-            <Moment calendar="true">{dateObj}</Moment>
+            <Moment calendar={true}>{dateObj}</Moment>
           </Badge>
         </Group>
 
         <Group>
           {todo.notes.length > 0 ? (
-            <div data-color-mode="light">
+            <div data-color-mode={theme}>
               <div className="wmde-markdown-var"> </div>
-              <MDEditor.Markdown source={todo.notes} />
+              <MDEditor.Markdown
+                className={theme === "dark" ? "dark-preview" : ""}
+                source={todo.notes}
+              />
             </div>
           ) : (
             "No notes to display"
           )}
         </Group>
         <Group position="right">
-          <Button color="teal" variant="light" onClick={handleEditOpen}>
+          <Button color="teal" variant="light" onClick={toggleEditMode}>
             <FiEdit3 size={20} />
           </Button>
         </Group>

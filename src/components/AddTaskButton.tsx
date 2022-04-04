@@ -3,38 +3,34 @@ import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import "react-tiny-fab/dist/styles.css";
 
-const AddTaskButton = ({ addTask, theme }) => {
+interface Props {
+  addTask: Function;
+}
+
+const AddTaskButton = ({ addTask }: Props) => {
   const [opened, setOpened] = useState(false);
 
-  const togglePopover = (val) => {
-    setOpened(val);
+  const togglePopover = () => {
+    setOpened(!opened);
   };
 
   return (
     <Group position="center" style={{ marginBottom: "30%" }}>
       <Popover
         opened={opened}
-        onClose={() => togglePopover(false)}
+        onClose={() => togglePopover()}
         position="bottom"
         placement="center"
         transition="fade"
         shadow="xl"
         width={600}
         target={
-          <Button
-            color="blue"
-            variant="light"
-            onClick={() => togglePopover(!opened)}
-          >
+          <Button color="blue" variant="light" onClick={() => togglePopover()}>
             Add Task
           </Button>
         }
       >
-        <TodoForm
-          addTask={addTask}
-          theme={theme}
-          togglePopover={togglePopover}
-        />
+        <TodoForm addTask={addTask} togglePopover={togglePopover} />
       </Popover>
     </Group>
   );

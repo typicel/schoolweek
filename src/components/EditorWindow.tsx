@@ -1,12 +1,34 @@
 import React from "react";
-import { Modal, Button, Group, TextInput } from "@mantine/core";
+import {
+  Modal,
+  Button,
+  Group,
+  TextInput,
+  createStyles,
+  ColorScheme,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FiCalendar, FiClock } from "react-icons/fi";
 import MDEditor from "@uiw/react-md-editor";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
 
-const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
+interface Todo {
+  id: number;
+  task: string;
+  notes: string;
+  date: string;
+  time: string;
+}
+
+interface Props {
+  todo: Todo;
+  editTask: Function;
+  toggleEditMode: Function;
+  theme: ColorScheme;
+}
+
+const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
   const form = useForm({
     initialValues: {
       newTask: todo.task,
@@ -16,7 +38,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
     },
   });
 
-  const checkDate = (due, time) => {
+  const checkDate = (due: string, time: string) => {
     if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
 
     let date = new Date(due);
@@ -26,13 +48,13 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
     let today = new Date();
 
     //Number of seconds between due date and right now
-    let timeLeft = (dateObj - today) / 1000;
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
 
     let result = timeLeft < 0 ? -2 : 0;
     return result;
   };
 
-  const saveChanges = (e) => {
+  const saveChanges = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let dateCheck = checkDate(form.values.newDate, form.values.newTime);
 
@@ -69,7 +91,7 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
         form.values.newNotes,
         form.values.newTime
       );
-      handleEditClose();
+      toggleEditMode();
       showNotification({
         message: "Task Updated ✅",
         autoClose: 2500,
@@ -84,12 +106,11 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
         title: "title-bold",
       }}
       size="1000px"
-      opened="true"
+      opened={true}
       title="Edit Task"
       className="modal-styles"
       closeOnClickOutside={false}
-      closeOnEsc={false}
-      onClose={handleEditClose}
+      onClose={() => toggleEditMode()}
     >
       <form onSubmit={saveChanges}>
         <TextInput
@@ -114,7 +135,11 @@ const EditorWindow = ({ todo, editTask, handleEditClose, theme }) => {
 
         <div data-color-mode={theme}>
           <div className="wmde-markdown-var"> </div>
-          <MDEditor {...form.getInputProps("newNotes")} />
+          <MDEditor
+            preview="edit"
+            hideToolbar={true}
+            {...form.getInputProps("newNotes")}
+          />
         </div>
 
         <Group position="right">

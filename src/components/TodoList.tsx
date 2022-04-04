@@ -1,8 +1,15 @@
 import React from "react";
-import { Group } from "@mantine/core";
+import { Group, ColorScheme } from "@mantine/core";
 import Todo from "./Todo";
 
-const TodoList = ({ list, handleDelete, editTask, theme }) => {
+interface Props {
+  list: Todo[];
+  handleDelete: Function;
+  editTask: Function;
+  theme: ColorScheme;
+}
+
+const TodoList = ({ list, handleDelete, editTask, theme }: Props) => {
   return (
     <div style={{ marginBottom: "100px" }}>
       {list.length > 0 ? (
