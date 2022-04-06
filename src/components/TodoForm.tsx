@@ -5,7 +5,12 @@ import { Button, Group, TextInput } from "@mantine/core";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { FiCalendar, FiClock } from "react-icons/fi";
 
-const TodoForm = ({ addTask, togglePopover }) => {
+interface Props {
+  addTask: Function;
+  togglePopover: Function;
+}
+
+const TodoForm = ({ addTask, togglePopover }: Props) => {
   const form = useForm({
     initialValues: {
       task: "",
@@ -15,7 +20,7 @@ const TodoForm = ({ addTask, togglePopover }) => {
     },
   });
 
-  const checkDate = (due, time) => {
+  const checkDate = (due: string, time: string) => {
     if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
 
     let date = new Date(due);
@@ -25,19 +30,19 @@ const TodoForm = ({ addTask, togglePopover }) => {
     let today = new Date();
 
     //Number of seconds between due date and right now
-    let timeLeft = (dateObj - today) / 1000;
+    let timeLeft = (dateObj.getTime() - today.getTime()) / 1000;
 
     let result = timeLeft < 0 ? -2 : 0;
     return result;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let dateCheck = checkDate(form.values.date, form.values.time);
 
     if (form.values.task.length <= 0) {
       showNotification({
-        title: "❌ Invalid task name",
+        title: "❌ Error",
         id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
@@ -47,8 +52,7 @@ const TodoForm = ({ addTask, togglePopover }) => {
       return;
     } else if (dateCheck === -2) {
       showNotification({
-        title: "❌ Invalid date",
-        id: "hello-there",
+        title: "❌ Error",
         disallowClose: false,
         autoClose: 2500,
         message: "Date should be after toady's date",
@@ -56,8 +60,7 @@ const TodoForm = ({ addTask, togglePopover }) => {
       });
     } else if (dateCheck === -1) {
       showNotification({
-        title: "❌ Invalid date",
-        id: "hello-there",
+        title: "❌ Error",
         disallowClose: false,
         autoClose: 2500,
         message: "Please enter a date and time",
@@ -78,27 +81,33 @@ const TodoForm = ({ addTask, togglePopover }) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
-        className="my-2"
+        className="my-2 task-input"
         placeholder="What needs to be done?"
         {...form.getInputProps("task")}
       />
 
       <Group position="left" className="my-2" grow>
         <DatePicker
-          required={true}
+          className="date-input"
+          allowFreeInput
           withinPortal={false}
           placeholder="Due"
           icon={<FiCalendar />}
           {...form.getInputProps("date")}
         />
         <TimeInput
-          required={true}
+          className="time-input"
           icon={<FiClock />}
           format="12"
           {...form.getInputProps("time")}
         />
       </Group>
-      <Button color="green" variant="light" type="submit">
+      <Button
+        className="submit-btn"
+        color="green"
+        variant="light"
+        type="submit"
+      >
         Add
       </Button>
     </form>

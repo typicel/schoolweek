@@ -1,23 +1,35 @@
-import { useState, useEffect } from "react";
-import { MantineProvider, ColorSchemeProvider, Paper } from "@mantine/core";
+import React, { useState, useEffect } from "react";
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  Paper,
+  ColorScheme,
+} from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import { useHotkeys, useLocalStorageValue } from "@mantine/hooks";
+import { useLocalStorageValue } from "@mantine/hooks";
 
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import AddTaskButton from "./components/AddTaskButton";
 import ThemeToggle from "./components/ThemeToggle";
+import TodoType from "./components/interfaces/TodoType";
 
 const App = () => {
   const [toDoList, setTodoList] = useState(() => {
-    const saved = localStorage.getItem("data");
+    const saved: any = localStorage.getItem("data");
     const inital = JSON.parse(saved);
     return inital || "";
   });
 
-  const editTask = (id, task, date, notes, time) => {
-    toDoList.map((element) => {
+  const editTask = (
+    id: number,
+    task: string,
+    date: string,
+    notes: string,
+    time: string
+  ) => {
+    toDoList.map((element: TodoType) => {
       if (element.id === id) {
         element.task = task;
         element.date = date;
@@ -29,19 +41,19 @@ const App = () => {
     });
   };
 
-  const handleDelete = (id) => {
-    const newArr = toDoList.filter((task) => {
+  const handleDelete = (id: string) => {
+    const newArr = toDoList.filter((task: TodoType) => {
       return task.id !== parseInt(id);
     });
     setTodoList(newArr);
   };
 
-  const addTask = (task, date, time, notes) => {
+  const addTask = (task: string, date: string, time: string, notes: string) => {
     let copy = [...toDoList];
     copy = [
       ...copy,
       {
-        id: Math.floor(Math.random() * 1000),
+        id: Math.floor(Math.random() * 10000),
         task: task,
         date: date,
         time: time,
@@ -50,7 +62,7 @@ const App = () => {
     ];
 
     copy = copy.sort((task1, task2) => {
-      return new Date(task1.date) - new Date(task2.date);
+      return new Date(task1.date).getTime() - new Date(task2.date).getTime();
     });
 
     setTodoList(copy);
@@ -61,15 +73,13 @@ const App = () => {
     localStorage.setItem("data", JSON.stringify(toDoList));
   });
 
-  const [colorScheme, setColorScheme] = useLocalStorageValue({
+  const [colorScheme, setColorScheme] = useLocalStorageValue<ColorScheme>({
     key: "mantine-color-scheme",
     defaultValue: "light",
   });
 
-  const toggleColorScheme = (value) =>
+  const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
-
-  useHotkeys([["mod+J", () => toggleColorScheme()]]);
 
   return (
     <div className="App" style={{ textAlign: "center" }}>
@@ -79,7 +89,7 @@ const App = () => {
           toggleColorScheme={toggleColorScheme}
         >
           <NotificationsProvider position="top-left">
-            <Paper>
+            <Paper className="app-bg">
               <ThemeToggle />
               <Header title=" Schoolweek" />
               <TodoList

@@ -1,11 +1,28 @@
 import React, { useState } from "react";
-import { Card, Text, Badge, Group, Button, Container } from "@mantine/core";
+import {
+  Card,
+  Text,
+  Badge,
+  Group,
+  Button,
+  Container,
+  ColorScheme,
+} from "@mantine/core";
 import InfoModal from "./InfoModal";
 import Moment from "react-moment";
 import { showNotification } from "@mantine/notifications";
+import TodoType from "./interfaces/TodoType";
 
-const Todo = ({ todo, handleDelete, editTask, theme }) => {
-  const handleClick = (e) => {
+interface Props {
+  todo: TodoType;
+  handleDelete: Function;
+  editTask: Function;
+  theme: ColorScheme;
+}
+
+const Todo = ({ todo, handleDelete, editTask, theme }: Props) => {
+  // Calls handleDelete from App.tsx when delete button is clicked
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     showNotification({
       message: "Task deleted ✅",
@@ -19,15 +36,16 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
   let dateObj = new Date(date.toDateString() + " " + time.toTimeString());
 
   const [modalShown, setShown] = useState(false);
-  const handleShow = () => setShown(true);
-  const handleClose = () => setShown(false);
+
+  const toggleInfo = () => setShown(!modalShown);
 
   return (
     <div>
+      {/* only show information when clicked */}
       {modalShown ? (
         <InfoModal
           todo={todo}
-          handleClose={handleClose}
+          toggleInfo={toggleInfo}
           editTask={editTask}
           theme={theme}
           dateObj={dateObj}
@@ -35,11 +53,11 @@ const Todo = ({ todo, handleDelete, editTask, theme }) => {
       ) : null}
       <Container className="my-4">
         <Card shadow="sm" style={{ width: "19rem" }}>
-          <Group position="apart" onClick={handleShow}>
+          <Group className="todo-info" position="apart" onClick={toggleInfo}>
             <Text weight={500}>{todo.task}</Text>
             {todo.date ? (
               <Badge color="purple" variant="light">
-                <Moment calendar="true">{dateObj}</Moment>
+                <Moment calendar={true}>{dateObj}</Moment>
               </Badge>
             ) : null}
           </Group>
