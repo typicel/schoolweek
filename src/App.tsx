@@ -13,8 +13,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import AddTaskButton from "./components/AddTaskButton";
 import ThemeToggle from "./components/ThemeToggle";
-import TodoType from './components/interfaces/TodoType';
-
+import TodoType from "./components/interfaces/TodoType";
 
 const App = () => {
   const [toDoList, setTodoList] = useState(() => {

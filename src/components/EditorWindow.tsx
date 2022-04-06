@@ -1,18 +1,11 @@
 import React from "react";
-import {
-  Modal,
-  Button,
-  Group,
-  TextInput,
-  createStyles,
-  ColorScheme,
-} from "@mantine/core";
+import { Modal, Button, Group, TextInput, ColorScheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FiCalendar, FiClock } from "react-icons/fi";
 import MDEditor from "@uiw/react-md-editor";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import TodoType from './interfaces/TodoType';
+import TodoType from "./interfaces/TodoType";
 
 interface Props {
   todo: TodoType;
@@ -25,19 +18,14 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
   const form = useForm({
     initialValues: {
       newTask: todo.task,
-      newDate: todo.date,
-      newTime: todo.time,
+      newDate: new Date(todo.date),
+      newTime: new Date(todo.time),
       newNotes: todo.notes,
     },
   });
 
-  const checkDate = (due: string, time: string) => {
-    if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
-
-    let date = new Date(due);
-    let thetime = new Date(time);
-
-    let dateObj = new Date(date.toDateString() + " " + thetime.toTimeString());
+  const checkDate = (due: Date, time: Date) => {
+    let dateObj = new Date(due.toDateString() + " " + time.toTimeString());
     let today = new Date();
 
     //Number of seconds between due date and right now
@@ -64,7 +52,7 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
         title: "❌ Error",
         disallowClose: false,
         autoClose: 2500,
-        message: "Date should be after toady's date",
+        message: "Date should be after today's date",
         color: "red",
       });
     } else if (dateCheck === -1) {
@@ -114,14 +102,16 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
 
         <Group position="left" className="my-2" grow>
           <DatePicker
+            required
             allowFreeInput
             className="date-edit-input"
-            withinPortal={false}
             placeholder="Due"
             icon={<FiCalendar />}
             {...form.getInputProps("newDate")}
           />
           <TimeInput
+            required
+            clearable
             className="time-edit-input"
             icon={<FiClock />}
             format="12"
@@ -139,7 +129,12 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
         </div>
 
         <Group position="right">
-          <Button className="my-3 submit-edits" color="green" variant="light" type="submit">
+          <Button
+            className="my-3 submit-edits"
+            color="green"
+            variant="light"
+            type="submit"
+          >
             Save Changes
           </Button>
         </Group>

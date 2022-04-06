@@ -88,7 +88,7 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
 
       <Group position="left" className="my-2" grow>
         <DatePicker
-        className="date-input"
+          className="date-input"
           allowFreeInput
           withinPortal={false}
           placeholder="Due"
@@ -96,13 +96,18 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
           {...form.getInputProps("date")}
         />
         <TimeInput
-        className="time-input"
+          className="time-input"
           icon={<FiClock />}
           format="12"
           {...form.getInputProps("time")}
         />
       </Group>
-      <Button className="submit-btn" color="green" variant="light" type="submit">
+      <Button
+        className="submit-btn"
+        color="green"
+        variant="light"
+        type="submit"
+      >
         Add
       </Button>
     </form>
