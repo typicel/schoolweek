@@ -9,7 +9,7 @@ const LightAndDarkModeButton = () => {
     <Group position="right">
       <Switch
         checked={checked}
-        className="m-3"
+        className="m-3 theme-switch"
         size="lg"
         onChange={(event) => {
           setChecked(event.currentTarget.checked);

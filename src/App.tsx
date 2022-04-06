@@ -13,14 +13,8 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import AddTaskButton from "./components/AddTaskButton";
 import ThemeToggle from "./components/ThemeToggle";
+import TodoType from './components/interfaces/TodoType';
 
-interface Todo {
-  id: number;
-  task: string;
-  notes: string;
-  date: string;
-  time: string;
-}
 
 const App = () => {
   const [toDoList, setTodoList] = useState(() => {
@@ -36,7 +30,7 @@ const App = () => {
     notes: string,
     time: string
   ) => {
-    toDoList.map((element: Todo) => {
+    toDoList.map((element: TodoType) => {
       if (element.id === id) {
         element.task = task;
         element.date = date;
@@ -49,7 +43,7 @@ const App = () => {
   };
 
   const handleDelete = (id: string) => {
-    const newArr = toDoList.filter((task: Todo) => {
+    const newArr = toDoList.filter((task: TodoType) => {
       return task.id !== parseInt(id);
     });
     setTodoList(newArr);
@@ -96,7 +90,7 @@ const App = () => {
           toggleColorScheme={toggleColorScheme}
         >
           <NotificationsProvider position="top-left">
-            <Paper>
+            <Paper className="app-bg">
               <ThemeToggle />
               <Header title=" Schoolweek" />
               <TodoList

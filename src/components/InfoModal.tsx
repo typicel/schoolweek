@@ -6,16 +6,10 @@ import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
 import "../editor.css";
 
-interface Todo {
-  id: number;
-  task: string;
-  notes: string;
-  date: string;
-  time: string;
-}
+import TodoType from './interfaces/TodoType'
 
 interface Props {
-  todo: Todo;
+  todo: TodoType;
   toggleInfo: Function;
   editTask: Function;
   theme: ColorScheme;
@@ -70,7 +64,7 @@ const InfoModal = ({ todo, toggleInfo, editTask, theme, dateObj }: Props) => {
           )}
         </Group>
         <Group position="right">
-          <Button color="teal" variant="light" onClick={toggleEditMode}>
+          <Button className="edit-btn" color="teal" variant="light" onClick={toggleEditMode}>
             <FiEdit3 size={20} />
           </Button>
         </Group>

@@ -42,7 +42,7 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
 
     if (form.values.task.length <= 0) {
       showNotification({
-        title: "❌ Invalid task name",
+        title: "❌ Error",
         id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
@@ -52,8 +52,7 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
       return;
     } else if (dateCheck === -2) {
       showNotification({
-        title: "❌ Invalid date",
-        id: "hello-there",
+        title: "❌ Error",
         disallowClose: false,
         autoClose: 2500,
         message: "Date should be after toady's date",
@@ -61,8 +60,7 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
       });
     } else if (dateCheck === -1) {
       showNotification({
-        title: "❌ Invalid date",
-        id: "hello-there",
+        title: "❌ Error",
         disallowClose: false,
         autoClose: 2500,
         message: "Please enter a date and time",
@@ -83,27 +81,28 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
-        className="my-2"
+        className="my-2 task-input"
         placeholder="What needs to be done?"
         {...form.getInputProps("task")}
       />
 
       <Group position="left" className="my-2" grow>
         <DatePicker
-          required={true}
+        className="date-input"
+          allowFreeInput
           withinPortal={false}
           placeholder="Due"
           icon={<FiCalendar />}
           {...form.getInputProps("date")}
         />
         <TimeInput
-          required={true}
+        className="time-input"
           icon={<FiClock />}
           format="12"
           {...form.getInputProps("time")}
         />
       </Group>
-      <Button color="green" variant="light" type="submit">
+      <Button className="submit-btn" color="green" variant="light" type="submit">
         Add
       </Button>
     </form>

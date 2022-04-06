@@ -1,9 +1,10 @@
 import React from "react";
 import { Group, ColorScheme } from "@mantine/core";
 import Todo from "./Todo";
+import TodoType from './interfaces/TodoType'
 
 interface Props {
-  list: Todo[];
+  list: TodoType[];
   handleDelete: Function;
   editTask: Function;
   theme: ColorScheme;

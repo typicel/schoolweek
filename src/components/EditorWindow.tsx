@@ -12,17 +12,10 @@ import { FiCalendar, FiClock } from "react-icons/fi";
 import MDEditor from "@uiw/react-md-editor";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-
-interface Todo {
-  id: number;
-  task: string;
-  notes: string;
-  date: string;
-  time: string;
-}
+import TodoType from './interfaces/TodoType';
 
 interface Props {
-  todo: Todo;
+  todo: TodoType;
   editTask: Function;
   toggleEditMode: Function;
   theme: ColorScheme;
@@ -68,7 +61,7 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
       });
     } else if (dateCheck === -2) {
       showNotification({
-        title: "❌ Invalid date",
+        title: "❌ Error",
         disallowClose: false,
         autoClose: 2500,
         message: "Date should be after toady's date",
@@ -114,19 +107,22 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
     >
       <form onSubmit={saveChanges}>
         <TextInput
-          className="my-2"
+          className="my-2 task-edit-input"
           placeholder="What needs to be done?"
           {...form.getInputProps("newTask")}
         />
 
         <Group position="left" className="my-2" grow>
           <DatePicker
+            allowFreeInput
+            className="date-edit-input"
             withinPortal={false}
             placeholder="Due"
             icon={<FiCalendar />}
             {...form.getInputProps("newDate")}
           />
           <TimeInput
+            className="time-edit-input"
             icon={<FiClock />}
             format="12"
             {...form.getInputProps("newTime")}
@@ -143,7 +139,7 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
         </div>
 
         <Group position="right">
-          <Button className="my-3" color="green" variant="light" type="submit">
+          <Button className="my-3 submit-edits" color="green" variant="light" type="submit">
             Save Changes
           </Button>
         </Group>

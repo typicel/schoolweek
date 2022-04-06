@@ -11,17 +11,10 @@ import {
 import InfoModal from "./InfoModal";
 import Moment from "react-moment";
 import { showNotification } from "@mantine/notifications";
-
-interface Todo {
-  id: number;
-  task: string;
-  notes: string;
-  date: string;
-  time: string;
-}
+import TodoType from "./interfaces/TodoType";
 
 interface Props {
-  todo: Todo;
+  todo: TodoType;
   handleDelete: Function;
   editTask: Function;
   theme: ColorScheme;
@@ -60,7 +53,7 @@ const Todo = ({ todo, handleDelete, editTask, theme }: Props) => {
       ) : null}
       <Container className="my-4">
         <Card shadow="sm" style={{ width: "19rem" }}>
-          <Group position="apart" onClick={toggleInfo}>
+          <Group className="todo-info" position="apart" onClick={toggleInfo}>
             <Text weight={500}>{todo.task}</Text>
             {todo.date ? (
               <Badge color="purple" variant="light">
