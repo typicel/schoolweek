@@ -24,6 +24,7 @@ const AddTaskButton = ({ addTask }: Props) => {
         transition="fade"
         shadow="xl"
         width={600}
+        closeOnClickOutside={false}
         target={
           <Button color="blue" variant="light" onClick={() => togglePopover()}>
             Add Task

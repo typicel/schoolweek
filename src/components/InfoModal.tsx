@@ -5,11 +5,10 @@ import Moment from "react-moment";
 import MDEditor from "@uiw/react-md-editor";
 import EditorWindow from "./EditorWindow";
 import "../editor.css";
-
-import TodoType from './interfaces/TodoType'
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
-  todo: TodoType;
+  todo: DocumentData;
   toggleInfo: Function;
   editTask: Function;
   theme: ColorScheme;
@@ -64,7 +63,12 @@ const InfoModal = ({ todo, toggleInfo, editTask, theme, dateObj }: Props) => {
           )}
         </Group>
         <Group position="right">
-          <Button className="edit-btn" color="teal" variant="light" onClick={toggleEditMode}>
+          <Button
+            className="edit-btn"
+            color="teal"
+            variant="light"
+            onClick={toggleEditMode}
+          >
             <FiEdit3 size={20} />
           </Button>
         </Group>

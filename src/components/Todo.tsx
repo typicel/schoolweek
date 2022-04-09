@@ -10,11 +10,10 @@ import {
 } from "@mantine/core";
 import InfoModal from "./InfoModal";
 import Moment from "react-moment";
-import { showNotification } from "@mantine/notifications";
-import TodoType from "./interfaces/TodoType";
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
-  todo: TodoType;
+  todo: DocumentData;
   handleDelete: Function;
   editTask: Function;
   theme: ColorScheme;
@@ -24,15 +23,13 @@ const Todo = ({ todo, handleDelete, editTask, theme }: Props) => {
   // Calls handleDelete from App.tsx when delete button is clicked
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    showNotification({
-      message: "Task deleted ✅",
-      autoClose: 2500,
-    });
     handleDelete(todo.id);
   };
 
-  let time = new Date(todo.time);
-  let date = new Date(todo.date);
+  console.log(todo);
+
+  let time = todo.time.toDate();
+  let date = todo.date.toDate();
   let dateObj = new Date(date.toDateString() + " " + time.toTimeString());
 
   const [modalShown, setShown] = useState(false);
