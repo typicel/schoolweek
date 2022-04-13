@@ -26,8 +26,6 @@ const Todo = ({ todo, handleDelete, editTask, theme }: Props) => {
     handleDelete(todo.id);
   };
 
-  console.log(todo);
-
   let time = todo.time.toDate();
   let date = todo.date.toDate();
   let dateObj = new Date(date.toDateString() + " " + time.toTimeString());
