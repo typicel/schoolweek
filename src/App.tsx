@@ -16,7 +16,8 @@ import { NotificationsProvider } from "@mantine/notifications";
 import { useLocalStorageValue } from "@mantine/hooks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase-config";
-
+import { onAuthStateChanged } from "firebase/auth";
+					
 const App = () => {
   const [colorScheme, setColorScheme] = useLocalStorageValue<ColorScheme>({
     key: "mantine-color-scheme",
@@ -24,6 +25,13 @@ const App = () => {
   });
 
   const [user] = useAuthState(auth);
+
+  const unsubscribe = onAuthStateChanged(auth, () => {
+    if (!auth) {
+      //If user logs out, we should unsubscribe from any db updates
+      unsubscribe();
+    }
+  });
 
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
@@ -36,18 +44,21 @@ const App = () => {
           toggleColorScheme={toggleColorScheme}
         >
           <NotificationsProvider position="top-left">
-            <Group className="mx-3" position="right">
-              <ThemeToggle />
-              <SignOut />
-            </Group>
-            <Header title="Schoolweek" />
-            {user ? <MainPage colorScheme={colorScheme} /> : <LoginPage />}
+            <Paper className="app-bg">
+              <Group className="mx-3" position="right">
+                <ThemeToggle />
+                <SignOut />
+              </Group>
+              <Header title="Schoolweek" />
+              {user ? <MainPage colorScheme={colorScheme} /> : <LoginPage />}
+            </Paper>
           </NotificationsProvider>
         </ColorSchemeProvider>
       </MantineProvider>
     </div>
   );
 };
+
 
 const SignOut = () => {
   return (
