@@ -3,7 +3,7 @@ import { Button } from "@mantine/core";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider, db } from "../firebase-config";
 import { showNotification } from "@mantine/notifications";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const LoginPage = () => {
   const handleAuth = () => {

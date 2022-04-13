@@ -8,8 +8,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
-  orderBy,
   query,
   setDoc,
   where,
@@ -35,10 +33,7 @@ const MainPage = ({ colorScheme }) => {
     notes: string,
     time: string
   ) => {
-    let docRef = doc(
-      db,
-      "users" + "/" + auth.currentUser.uid + "/" + "tasks" + "/" + id
-    );
+    let docRef = doc(db, `users/${auth.currentUser.uid}/tasks/${id}`);
     setDoc(docRef, {
       id,
       task,
@@ -68,10 +63,7 @@ const MainPage = ({ colorScheme }) => {
         name: auth.currentUser.displayName,
       },
     }).then((res) => {
-      let newDoc = doc(
-        db,
-        "users" + "/" + auth.currentUser.uid + "/" + "tasks" + "/" + res.id
-      );
+      let newDoc = doc(db, `users/${auth.currentUser.uid}/tasks/${res.id}`);
 
       setDoc(newDoc, {
         task,
@@ -88,9 +80,7 @@ const MainPage = ({ colorScheme }) => {
   };
 
   const handleDelete = (id: number) => {
-    deleteDoc(
-      doc(db, "users" + "/" + auth.currentUser.uid + "/" + "tasks" + "/" + id)
-    )
+    deleteDoc(doc(db, `users/${auth.currentUser.uid}/tasks/${id}`))
       .then(() => {
         showNotification({
           message: "✅ Task deleted",
