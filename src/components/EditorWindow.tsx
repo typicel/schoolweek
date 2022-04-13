@@ -5,10 +5,10 @@ import { FiCalendar, FiClock } from "react-icons/fi";
 import MDEditor from "@uiw/react-md-editor";
 import { DatePicker, TimeInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
-import TodoType from "./interfaces/TodoType";
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
-  todo: TodoType;
+  todo: DocumentData;
   editTask: Function;
   toggleEditMode: Function;
   theme: ColorScheme;
@@ -18,8 +18,8 @@ const EditorWindow = ({ todo, editTask, toggleEditMode, theme }: Props) => {
   const form = useForm({
     initialValues: {
       newTask: todo.task,
-      newDate: new Date(todo.date),
-      newTime: new Date(todo.time),
+      newDate: todo.date.toDate(),
+      newTime: todo.time.toDate(),
       newNotes: todo.notes,
     },
   });

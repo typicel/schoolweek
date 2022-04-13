@@ -3,11 +3,7 @@ import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import "react-tiny-fab/dist/styles.css";
 
-interface Props {
-  addTask: Function;
-}
-
-const AddTaskButton = ({ addTask }: Props) => {
+const AddTaskButton = ({ addTask }) => {
   const [opened, setOpened] = useState(false);
 
   const togglePopover = () => {
@@ -24,6 +20,7 @@ const AddTaskButton = ({ addTask }: Props) => {
         transition="fade"
         shadow="xl"
         width={600}
+        closeOnClickOutside={false}
         target={
           <Button color="blue" variant="light" onClick={() => togglePopover()}>
             Add Task

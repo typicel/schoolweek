@@ -24,7 +24,7 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
     if (due === "" || time === "") return -1; //User shouldn't be able to enter a time without a date
 
     let date = new Date(due);
-    let thetime = new Date(time);
+    let thetime = new Date();
 
     let dateObj = new Date(date.toDateString() + " " + thetime.toTimeString());
     let today = new Date();
@@ -43,7 +43,6 @@ const TodoForm = ({ addTask, togglePopover }: Props) => {
     if (form.values.task.length <= 0) {
       showNotification({
         title: "❌ Error",
-        id: "hello-there",
         disallowClose: false,
         autoClose: 2500,
         message: "Task name cannot be empty",

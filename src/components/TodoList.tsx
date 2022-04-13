@@ -1,10 +1,10 @@
 import React from "react";
 import { Group, ColorScheme } from "@mantine/core";
 import Todo from "./Todo";
-import TodoType from './interfaces/TodoType'
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
-  list: TodoType[];
+  list: DocumentData[] | undefined;
   handleDelete: Function;
   editTask: Function;
   theme: ColorScheme;
@@ -13,7 +13,7 @@ interface Props {
 const TodoList = ({ list, handleDelete, editTask, theme }: Props) => {
   return (
     <div style={{ marginBottom: "100px" }}>
-      {list.length > 0 ? (
+      {list && list.length > 0 ? (
         <Group position="center" spacing="sm">
           {list.map((todo) => {
             return (
