@@ -37,7 +37,7 @@ const App = () => {
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   return (
-    <div className="App" style={{ textAlign: "center" }}>
+    <div className="App" style={{ textAlign: "center", height: "100%"}}>
       <MantineProvider theme={{ colorScheme }}>
         <ColorSchemeProvider
           colorScheme={colorScheme}

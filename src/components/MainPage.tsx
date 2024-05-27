@@ -98,7 +98,6 @@ const MainPage = ({ colorScheme }) => {
 
   return (
     <>
-      <p>Current user: {auth.currentUser.displayName}</p>
       <TodoList
         list={values}
         handleDelete={handleDelete}
@@ -106,7 +105,7 @@ const MainPage = ({ colorScheme }) => {
         theme={colorScheme}
       />
       <AddTaskButton addTask={addTask} />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
