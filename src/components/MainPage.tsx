@@ -1,6 +1,6 @@
 import React from "react";
 import AddTaskButton from "./AddTaskButton";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import TodoList from "./TodoList";
 
 import {
