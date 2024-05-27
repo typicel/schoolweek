@@ -3,10 +3,10 @@
 A lightweight task and assignment organization web application built with React
 
 [Visit Schoolweek](http:/typicel.me/schoolweek)
-![Image of schoolweek website](assets/demo.png)
-![dark theme](assets/dark.png)
-![viewing task](assets/viewing.png)
-![Image of editing a task](assets/editing.png)
+![Image of schoolweek website](assets/demo2.png)
+![viewing task](assets/preview.png)
+![Image of editing a task](assets/editing2.png)
+![Image of adding task UI](assets/adding.png)
 
 ---
 
